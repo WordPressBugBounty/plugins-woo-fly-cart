@@ -3,7 +3,7 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 5.8.0
+Version: 5.8.1
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
@@ -12,12 +12,12 @@ Requires Plugins: woocommerce
 Requires at least: 4.0
 Tested up to: 6.6
 WC requires at least: 3.0
-WC tested up to: 9.1
+WC tested up to: 9.3
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.8.0' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.8.1' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -100,6 +100,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 					add_filter( 'wpcsm_locations', [ $this, 'wpcsm_locations' ] );
 
 					// shortcode
+					add_shortcode( 'woofc_link', [ $this, 'shortcode_cart_link' ] );
 					add_shortcode( 'woofc_cart_link', [ $this, 'shortcode_cart_link' ] );
 
 					// ajax
@@ -1622,7 +1623,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
 					$product = $global_product;
 
-					return ob_get_clean();
+					return apply_filters( 'woofc_cart_area', ob_get_clean() );
 				}
 
 				function get_suggested_products( $suggested_products = [], $link = 'no' ) {

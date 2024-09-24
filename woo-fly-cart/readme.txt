@@ -4,8 +4,8 @@ Donate link: https://wpclever.net
 Tags: woocommerce, wpc, fly cart, mini-cart, floating-cart
 Requires at least: 4.0
 Tested up to: 6.6
-Version: 5.8.0
-Stable tag: 5.8.0
+Version: 5.8.1
+Stable tag: 5.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,8 +70,12 @@ Please try other plugins from us:
 
 == Changelog ==
 
+= 5.8.1 =
+* Updated: Optimized the code
+* Updated: Compatible with WP 6.6 & Woo 9.3
+
 = 5.8.0 =
-* Updated: Using WC_AJAX for frontend
+* Updated: Use WC_AJAX for frontend
 
 = 5.7.2 =
 * Added: Suggested products for empty cart
