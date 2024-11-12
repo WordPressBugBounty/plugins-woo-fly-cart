@@ -3,21 +3,21 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 5.8.1
+Version: 5.8.2
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
 Domain Path: /languages/
 Requires Plugins: woocommerce
 Requires at least: 4.0
-Tested up to: 6.6
+Tested up to: 6.7
 WC requires at least: 3.0
 WC tested up to: 9.3
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.8.1' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.8.2' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -1486,7 +1486,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 							}
 						}
 					} else {
-						echo '<div class="woofc-no-item">' . self::localization( 'no_products', esc_html__( 'There are no products in the cart!', 'woo-fly-cart' ) ) . '</div>';
+						echo '<div class="woofc-no-item">' . wp_kses_post( apply_filters( 'woofc_empty_message', self::localization( 'no_products', esc_html__( 'There are no products in the cart!', 'woo-fly-cart' ) ) ) ) . '</div>';
 
 						if ( ( self::get_setting( 'save_for_later', 'yes' ) === 'yes' ) && class_exists( 'WPCleverWoosl' ) ) {
 							echo '<div class="woofc-save-for-later">' . do_shortcode( '[woosl_list context="woofc"]' ) . '</div>';
