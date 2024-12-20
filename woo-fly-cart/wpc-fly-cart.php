@@ -3,7 +3,7 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 5.8.2
+Version: 5.8.3
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
@@ -12,12 +12,14 @@ Requires Plugins: woocommerce
 Requires at least: 4.0
 Tested up to: 6.7
 WC requires at least: 3.0
-WC tested up to: 9.3
+WC tested up to: 9.5
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.8.2' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.8.3' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -55,9 +57,6 @@ if ( ! function_exists( 'woofc_init' ) ) {
 	add_action( 'plugins_loaded', 'woofc_init', 11 );
 
 	function woofc_init() {
-		// load text-domain
-		load_plugin_textdomain( 'woo-fly-cart', false, basename( __DIR__ ) . '/languages/' );
-
 		if ( ! function_exists( 'WC' ) || ! version_compare( WC()->version, '3.0', '>=' ) ) {
 			add_action( 'admin_notices', 'woofc_notice_wc' );
 
@@ -87,6 +86,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 						self::$localization = (array) get_option( '_woofc_localization', [] );
 					}
 
+					add_action( 'init', [ $this, 'init' ] );
 					add_action( 'wp_footer', [ $this, 'footer' ] );
 					add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 					add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
@@ -108,6 +108,11 @@ if ( ! function_exists( 'woofc_init' ) ) {
 					add_action( 'wc_ajax_woofc_remove_item', [ $this, 'ajax_remove_item' ] );
 					add_action( 'wc_ajax_woofc_undo_remove', [ $this, 'ajax_undo_remove' ] );
 					add_action( 'wc_ajax_woofc_empty_cart', [ $this, 'ajax_empty_cart' ] );
+				}
+
+				function init() {
+					// load text-domain
+					load_plugin_textdomain( 'woo-fly-cart', false, basename( WOOFC_DIR ) . '/languages/' );
 				}
 
 				public static function get_settings() {
