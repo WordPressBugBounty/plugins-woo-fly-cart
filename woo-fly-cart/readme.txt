@@ -4,8 +4,8 @@ Donate link: https://wpclever.net
 Tags: woocommerce, wpc, fly cart, mini-cart, floating-cart
 Requires at least: 4.0
 Tested up to: 6.7
-Version: 5.8.3
-Stable tag: 5.8.3
+Version: 5.9.0
+Stable tag: 5.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,7 @@ Please try other plugins from us:
 - [WPC Sticky Add To Cart](https://wordpress.org/plugins/wpc-sticky-add-to-cart/ "WPC Sticky Add To Cart")
 - [WPC Smart Messages](https://wordpress.org/plugins/wpc-smart-messages/ "WPC Smart Messages")
 - [WPC Estimated Delivery Date](https://wordpress.org/plugins/wpc-estimated-delivery-date/ "WPC Estimated Delivery Date")
+- [WPC Smart Upsell Funnel](https://wordpress.org/plugins/wpc-smart-upsell-funnel/ "WPC Smart Upsell Funnel")
 
 == Installation ==
 
@@ -69,6 +70,9 @@ Please try other plugins from us:
 5. Now, whenever you add product into the cart, the mini cart will be shown
 
 == Changelog ==
+
+= 5.9.0 =
+* Updated: Compatible with WPC Smart Upsell Funnel
 
 = 5.8.3 =
 * Updated: Optimized the code

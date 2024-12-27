@@ -324,6 +324,78 @@ body.woofc-show .woofc-overlay, body.woofc-show .woofc-area {
   background-color: transparent;
 }
 
+/* upsell funnel */
+
+.woofc-area .woofc-upsell-funnel {
+  padding: 0 20px;
+  margin-top: 15px;
+
+  .wpcuf-uf-wrap {
+    .wpcuf-uf-header {
+      text-align: center;
+      overflow: hidden;
+
+      .wpcuf-uf-heading {
+        font-size: inherit;
+        font-weight: inherit;
+        position: relative;
+        display: inline;
+
+        &:before {
+          content: "";
+          width: 1000px;
+          height: 1px;
+          background-color: rgba(255, 255, 255, 0.5);
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: -10px;
+          transform: translateX(-100%);
+        }
+
+        &:after {
+          content: "";
+          width: 1000px;
+          height: 1px;
+          background-color: rgba(255, 255, 255, 0.5);
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: auto;
+          right: -10px;
+          transform: translateX(100%);
+        }
+      }
+    }
+  }
+}
+
+.woofc-area.woofc-style-02 .woofc-upsell-funnel .wpcuf-uf-wrap .wpcuf-uf-header .wpcuf-uf-heading:before, .woofc-area.woofc-style-02 .woofc-upsell-funnel .wpcuf-uf-wrap .wpcuf-uf-header .wpcuf-uf-heading:after, .woofc-area.woofc-style-04 .woofc-upsell-funnel .wpcuf-uf-wrap .wpcuf-uf-header .wpcuf-uf-heading:before, .woofc-area.woofc-style-04 .woofc-upsell-funnel .wpcuf-uf-wrap .wpcuf-uf-header .wpcuf-uf-heading:after {
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.woofc-upsell-funnel .wpcuf-uf-wrap .wpcuf-uf-products.slick-initialized {
+  display: block;
+
+  .wpcuf-uf-product {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: start;
+
+    .wpcuf-uf-product-image {
+      width: 100px;
+      flex: 0 0 100px;
+      margin: 0 5px;
+    }
+
+    .wpcuf-uf-product-info {
+      flex-grow: 1;
+      margin: 0 5px;
+    }
+  }
+}
+
 /* cross sells */
 
 .woofc-area .woofc-suggested {

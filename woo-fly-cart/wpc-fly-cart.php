@@ -3,7 +3,7 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 5.8.3
+Version: 5.9.0
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
@@ -19,7 +19,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.8.3' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.9.0' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -161,7 +161,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 					}
 
 					// slick
-					if ( ( apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ) ) === 'yes' ) && ! empty( self::get_setting( 'suggested', [] ) ) ) {
+					if ( ( ( apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ), 'suggested' ) === 'yes' ) && ! empty( self::get_setting( 'suggested', [] ) ) ) || ( ( self::get_setting( 'upsell_funnel', 'yes' ) === 'yes' ) && class_exists( 'Wpcuf' ) && ( self::get_setting( 'upsell_funnel_carousel', 'yes' ) === 'yes' ) ) ) {
 						wp_enqueue_style( 'slick', WOOFC_URI . 'assets/slick/slick.css' );
 						wp_enqueue_script( 'slick', WOOFC_URI . 'assets/slick/slick.min.js', [ 'jquery' ], WOOFC_VERSION, true );
 					}
@@ -225,26 +225,28 @@ if ( ! function_exists( 'woofc_init' ) ) {
 						'wc-cart-fragments'
 					], WOOFC_VERSION, true );
 					wp_localize_script( 'woofc-frontend', 'woofc_vars', apply_filters( 'woofc_vars', [
-							'wc_ajax_url'           => WC_AJAX::get_endpoint( '%%endpoint%%' ),
-							'nonce'                 => wp_create_nonce( 'woofc-security' ),
-							'scrollbar'             => self::get_setting( 'perfect_scrollbar', 'yes' ),
-							'auto_show'             => self::get_setting( 'auto_show_ajax', 'yes' ),
-							'auto_show_normal'      => self::get_setting( 'auto_show_normal', 'yes' ),
-							'added_to_cart'         => esc_attr( $added_to_cart ),
-							'delay'                 => (int) apply_filters( 'woofc_delay', 300 ),
-							'undo_remove'           => self::get_setting( 'undo_remove', 'yes' ),
-							'confirm_remove'        => self::get_setting( 'confirm_remove', 'no' ),
-							'instant_checkout'      => self::get_setting( 'instant_checkout', 'no' ),
-							'instant_checkout_open' => self::get_setting( 'instant_checkout_open', 'no' ),
-							'confirm_empty'         => self::get_setting( 'confirm_empty', 'no' ),
-							'confirm_empty_text'    => self::localization( 'empty_confirm', esc_html__( 'Do you want to empty the cart?', 'woo-fly-cart' ) ),
-							'confirm_remove_text'   => self::localization( 'remove_confirm', esc_html__( 'Do you want to remove this item?', 'woo-fly-cart' ) ),
-							'undo_remove_text'      => self::localization( 'remove_undo', esc_html__( 'Undo?', 'woo-fly-cart' ) ),
-							'removed_text'          => self::localization( 'removed', /* translators: product */ esc_html__( '%s was removed.', 'woo-fly-cart' ) ),
-							'manual_show'           => self::get_setting( 'manual_show', '' ),
-							'reload'                => self::get_setting( 'reload', 'no' ),
-							'slick'                 => apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ) ),
-							'slick_params'          => apply_filters( 'woofc_slick_params', json_encode( apply_filters( 'woofc_slick_params_arr', [
+							'wc_ajax_url'             => WC_AJAX::get_endpoint( '%%endpoint%%' ),
+							'nonce'                   => wp_create_nonce( 'woofc-security' ),
+							'scrollbar'               => self::get_setting( 'perfect_scrollbar', 'yes' ),
+							'auto_show'               => self::get_setting( 'auto_show_ajax', 'yes' ),
+							'auto_show_normal'        => self::get_setting( 'auto_show_normal', 'yes' ),
+							'added_to_cart'           => esc_attr( $added_to_cart ),
+							'delay'                   => (int) apply_filters( 'woofc_delay', 300 ),
+							'undo_remove'             => self::get_setting( 'undo_remove', 'yes' ),
+							'confirm_remove'          => self::get_setting( 'confirm_remove', 'no' ),
+							'instant_checkout'        => self::get_setting( 'instant_checkout', 'no' ),
+							'instant_checkout_open'   => self::get_setting( 'instant_checkout_open', 'no' ),
+							'confirm_empty'           => self::get_setting( 'confirm_empty', 'no' ),
+							'confirm_empty_text'      => self::localization( 'empty_confirm', esc_html__( 'Do you want to empty the cart?', 'woo-fly-cart' ) ),
+							'confirm_remove_text'     => self::localization( 'remove_confirm', esc_html__( 'Do you want to remove this item?', 'woo-fly-cart' ) ),
+							'undo_remove_text'        => self::localization( 'remove_undo', esc_html__( 'Undo?', 'woo-fly-cart' ) ),
+							'removed_text'            => self::localization( 'removed', /* translators: product */ esc_html__( '%s was removed.', 'woo-fly-cart' ) ),
+							'manual_show'             => self::get_setting( 'manual_show', '' ),
+							'reload'                  => self::get_setting( 'reload', 'no' ),
+							'suggested_carousel'      => apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ), 'suggested' ) === 'yes',
+							'save_for_later_carousel' => apply_filters( 'woofc_slick', self::get_setting( 'save_for_later_carousel', 'yes' ), 'save_for_later' ) === 'yes',
+							'upsell_funnel_carousel'  => self::get_setting( 'upsell_funnel_carousel', 'yes' ) === 'yes',
+							'slick_params'            => apply_filters( 'woofc_slick_params', json_encode( apply_filters( 'woofc_slick_params_arr', [
 								'slidesToShow'   => 1,
 								'slidesToScroll' => 1,
 								'dots'           => true,
@@ -253,11 +255,11 @@ if ( ! function_exists( 'woofc_init' ) ) {
 								'autoplaySpeed'  => 3000,
 								'rtl'            => is_rtl()
 							] ) ) ),
-							'is_cart'               => is_cart(),
-							'is_checkout'           => is_checkout(),
-							'cart_url'              => self::disable() ? wc_get_cart_url() : '',
-							'hide_count_empty'      => self::get_setting( 'count_hide_empty', 'no' ),
-							'wc_checkout_js'        => defined( 'WC_PLUGIN_FILE' ) ? plugins_url( 'assets/js/frontend/checkout.js', WC_PLUGIN_FILE ) : '',
+							'is_cart'                 => is_cart(),
+							'is_checkout'             => is_checkout(),
+							'cart_url'                => self::disable() ? wc_get_cart_url() : '',
+							'hide_count_empty'        => self::get_setting( 'count_hide_empty', 'no' ),
+							'wc_checkout_js'          => defined( 'WC_PLUGIN_FILE' ) ? plugins_url( 'assets/js/frontend/checkout.js', WC_PLUGIN_FILE ) : '',
 						] )
 					);
 				}
@@ -400,6 +402,8 @@ if ( ! function_exists( 'woofc_init' ) ) {
 								$suggested               = self::get_setting( 'suggested', [] );
 								$suggested_empty         = self::get_setting( 'suggested_empty', 'no' );
 								$suggested_carousel      = self::get_setting( 'suggested_carousel', 'yes' );
+								$upsell_funnel           = self::get_setting( 'upsell_funnel', 'yes' );
+								$upsell_funnel_carousel  = self::get_setting( 'upsell_funnel_carousel', 'yes' );
 								$empty                   = self::get_setting( 'empty', 'no' );
 								$confirm_empty           = self::get_setting( 'confirm_empty', 'no' );
 								$share                   = self::get_setting( 'share', 'yes' );
@@ -796,6 +800,24 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                 <label> <select name="woofc_settings[suggested_carousel]">
                                                         <option value="yes" <?php selected( $suggested_carousel, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $suggested_carousel, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
+                                                    </select> </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><?php esc_html_e( 'Upsell funnel products', 'woo-fly-cart' ); ?></th>
+                                            <td>
+                                                <label> <select name="woofc_settings[upsell_funnel]">
+                                                        <option value="yes" <?php selected( $upsell_funnel, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
+                                                        <option value="no" <?php selected( $upsell_funnel, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
+                                                    </select> </label> <span class="description">Show upsell funnel products from <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-smart-upsell-funnel&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Smart Upsell Funnel">WPC Smart Upsell Funnel</a>.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><?php esc_html_e( 'Upsell funnel products carousel', 'woo-fly-cart' ); ?></th>
+                                            <td>
+                                                <label> <select name="woofc_settings[upsell_funnel_carousel]">
+                                                        <option value="yes" <?php selected( $upsell_funnel_carousel, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
+                                                        <option value="no" <?php selected( $upsell_funnel_carousel, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
                                                     </select> </label>
                                             </td>
                                         </tr>
@@ -1610,6 +1632,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
 								self::get_suggested_products( $suggested_products, $link );
 							}
 						}
+
+						if ( self::get_setting( 'upsell_funnel', 'yes' ) === 'yes' && class_exists( 'Wpcuf' ) ) {
+							echo '<div class="woofc-upsell-funnel">' . do_shortcode( '[wpcuf_uf]' ) . '</div>';
+						}
 					}
 
 					if ( self::get_setting( 'continue', 'yes' ) === 'yes' ) {
@@ -1636,7 +1662,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 					echo apply_filters( 'woofc_above_suggested_content', '' );
 					echo '<div class="woofc-suggested">';
 					echo '<div class="woofc-suggested-heading"><span>' . self::localization( 'suggested', esc_html__( 'You may be interested in&hellip;', 'woo-fly-cart' ) ) . '</span></div>';
-					echo '<div class="woofc-suggested-products ' . ( ( count( $suggested_products ) > 1 ) && ( apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ) ) === 'yes' ) ? 'woofc-suggested-products-slick' : '' ) . '">';
+					echo '<div class="woofc-suggested-products ' . ( ( count( $suggested_products ) > 1 ) && ( apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ), 'suggested' ) === 'yes' ) ? 'woofc-suggested-products-slick' : '' ) . '">';
 
 					foreach ( $suggested_products as $suggested_product_id ) {
 						$suggested_product = wc_get_product( $suggested_product_id );
