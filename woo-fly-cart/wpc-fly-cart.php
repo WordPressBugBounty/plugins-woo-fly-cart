@@ -3,7 +3,7 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 5.9.0
+Version: 5.9.1
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
@@ -12,14 +12,14 @@ Requires Plugins: woocommerce
 Requires at least: 4.0
 Tested up to: 6.7
 WC requires at least: 3.0
-WC tested up to: 9.5
+WC tested up to: 9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.9.0' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.9.1' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -201,8 +201,8 @@ if ( ! function_exists( 'woofc_init' ) ) {
                         }";
 					wp_add_inline_style( 'woofc-frontend', $inline_css );
 
-					$added_to_cart = 'no';
-					$requests      = apply_filters( 'woofc_auto_show_requests', [
+					$show_cart = 'no';
+					$requests  = apply_filters( 'woofc_auto_show_requests', [
 						'add-to-cart',
 						'product_added_to_cart',
 						'added_to_cart',
@@ -213,7 +213,19 @@ if ( ! function_exists( 'woofc_init' ) ) {
 					if ( is_array( $requests ) && ! empty( $requests ) ) {
 						foreach ( $requests as $request ) {
 							if ( isset( $_REQUEST[ $request ] ) ) {
-								$added_to_cart = 'yes';
+								$show_cart = 'yes';
+								break;
+							}
+						}
+					}
+
+					$show_checkout     = 'no';
+					$checkout_requests = apply_filters( 'woofc_auto_show_checkout_requests', [] );
+
+					if ( is_array( $checkout_requests ) && ! empty( $checkout_requests ) ) {
+						foreach ( $checkout_requests as $checkout_request ) {
+							if ( isset( $_REQUEST[ $checkout_request ] ) ) {
+								$show_checkout = 'yes';
 								break;
 							}
 						}
@@ -230,7 +242,8 @@ if ( ! function_exists( 'woofc_init' ) ) {
 							'scrollbar'               => self::get_setting( 'perfect_scrollbar', 'yes' ),
 							'auto_show'               => self::get_setting( 'auto_show_ajax', 'yes' ),
 							'auto_show_normal'        => self::get_setting( 'auto_show_normal', 'yes' ),
-							'added_to_cart'           => esc_attr( $added_to_cart ),
+							'show_cart'               => esc_attr( $show_cart ),
+							'show_checkout'           => esc_attr( $show_checkout ),
 							'delay'                   => (int) apply_filters( 'woofc_delay', 300 ),
 							'undo_remove'             => self::get_setting( 'undo_remove', 'yes' ),
 							'confirm_remove'          => self::get_setting( 'confirm_remove', 'no' ),
@@ -343,9 +356,12 @@ if ( ! function_exists( 'woofc_init' ) ) {
                             <p>
 								<?php printf( /* translators: stars */ esc_html__( 'Thank you for using our plugin! If you are satisfied, please reward it a full five-star %s rating.', 'woo-fly-cart' ), '<span style="color:#ffb900">&#9733;&#9733;&#9733;&#9733;&#9733;</span>' ); ?>
                                 <br/>
-                                <a href="<?php echo esc_url( WOOFC_REVIEWS ); ?>" target="_blank"><?php esc_html_e( 'Reviews', 'woo-fly-cart' ); ?></a> |
-                                <a href="<?php echo esc_url( WOOFC_CHANGELOG ); ?>" target="_blank"><?php esc_html_e( 'Changelog', 'woo-fly-cart' ); ?></a> |
-                                <a href="<?php echo esc_url( WOOFC_DISCUSSION ); ?>" target="_blank"><?php esc_html_e( 'Discussion', 'woo-fly-cart' ); ?></a>
+                                <a href="<?php echo esc_url( WOOFC_REVIEWS ); ?>"
+                                   target="_blank"><?php esc_html_e( 'Reviews', 'woo-fly-cart' ); ?></a> |
+                                <a href="<?php echo esc_url( WOOFC_CHANGELOG ); ?>"
+                                   target="_blank"><?php esc_html_e( 'Changelog', 'woo-fly-cart' ); ?></a> |
+                                <a href="<?php echo esc_url( WOOFC_DISCUSSION ); ?>"
+                                   target="_blank"><?php esc_html_e( 'Discussion', 'woo-fly-cart' ); ?></a>
                             </p>
                         </div>
 						<?php if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) { ?>
@@ -355,16 +371,21 @@ if ( ! function_exists( 'woofc_init' ) ) {
 						<?php } ?>
                         <div class="wpclever_settings_page_nav">
                             <h2 class="nav-tab-wrapper">
-                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=settings' ) ); ?>" class="<?php echo esc_attr( $active_tab === 'settings' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>">
+                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=settings' ) ); ?>"
+                                   class="<?php echo esc_attr( $active_tab === 'settings' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>">
 									<?php esc_html_e( 'Settings', 'woo-fly-cart' ); ?>
                                 </a>
-                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=localization' ) ); ?>" class="<?php echo esc_attr( $active_tab === 'localization' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>">
+                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=localization' ) ); ?>"
+                                   class="<?php echo esc_attr( $active_tab === 'localization' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>">
 									<?php esc_html_e( 'Localization', 'woo-fly-cart' ); ?>
                                 </a>
-                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=premium' ) ); ?>" class="<?php echo esc_attr( $active_tab === 'premium' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>" style="color: #c9356e">
+                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=premium' ) ); ?>"
+                                   class="<?php echo esc_attr( $active_tab === 'premium' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>"
+                                   style="color: #c9356e">
 									<?php esc_html_e( 'Premium Version', 'woo-fly-cart' ); ?>
                                 </a>
-                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-kit' ) ); ?>" class="nav-tab">
+                                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-kit' ) ); ?>"
+                                   class="nav-tab">
 									<?php esc_html_e( 'Essential Kit', 'woo-fly-cart' ); ?>
                                 </a>
                             </h2>
@@ -518,7 +539,11 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                         <tr class="woofc_hide_if_style woofc_show_if_style_01 woofc_show_if_style_02 woofc_show_if_style_03 woofc_show_if_style_04">
                                             <th><?php esc_html_e( 'Color', 'woo-fly-cart' ); ?></th>
                                             <td>
-                                                <label for="woofc_color"></label><input type="text" name="woofc_settings[color]" id="woofc_color" value="<?php echo self::get_setting( 'color', '#cc6055' ); ?>" class="woofc_color_picker"/>
+                                                <label for="woofc_color"></label><input type="text"
+                                                                                        name="woofc_settings[color]"
+                                                                                        id="woofc_color"
+                                                                                        value="<?php echo self::get_setting( 'color', '#cc6055' ); ?>"
+                                                                                        class="woofc_color_picker"/>
                                                 <span class="description"><?php printf( /* translators: color */ esc_html__( 'Background or text color of selected style, default %s', 'woo-fly-cart' ), '<code>#cc6055</code>' ); ?></span>
                                             </td>
                                         </tr>
@@ -530,8 +555,11 @@ if ( ! function_exists( 'woofc_init' ) ) {
 														echo '<img src="' . wp_get_attachment_url( self::get_setting( 'bg_image', '' ) ) . '"/>';
 													} ?>
                                                 </div>
-                                                <input id="woofc_upload_image_button" type="button" class="button" value="<?php esc_html_e( 'Upload image', 'woo-fly-cart' ); ?>"/>
-                                                <input type="hidden" name="woofc_settings[bg_image]" id="woofc_image_attachment_url" value="<?php echo self::get_setting( 'bg_image', '' ); ?>"/>
+                                                <input id="woofc_upload_image_button" type="button" class="button"
+                                                       value="<?php esc_html_e( 'Upload image', 'woo-fly-cart' ); ?>"/>
+                                                <input type="hidden" name="woofc_settings[bg_image]"
+                                                       id="woofc_image_attachment_url"
+                                                       value="<?php echo self::get_setting( 'bg_image', '' ); ?>"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -562,7 +590,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                         <option value="yes_blank" <?php selected( $link, 'yes_blank' ); ?>><?php esc_html_e( 'Yes, open in the new tab', 'woo-fly-cart' ); ?></option>
                                                         <option value="yes_popup" <?php selected( $link, 'yes_popup' ); ?>><?php esc_html_e( 'Yes, open quick view popup', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $link, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
-                                                    </select> </label> <span class="description">If you choose "Open quick view popup", please install <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-quick-view&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Smart Quick View">WPC Smart Quick View</a> to make it work.</span>
+                                                    </select> </label> <span class="description">If you choose "Open quick view popup", please install <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-quick-view&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="WPC Smart Quick View">WPC Smart Quick View</a> to make it work.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -593,7 +623,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                         <option value="yes" <?php selected( $estimated_delivery_date, 'yes' ); ?>><?php esc_html_e( 'Show', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $estimated_delivery_date, 'no' ); ?>><?php esc_html_e( 'Hide', 'woo-fly-cart' ); ?></option>
                                                     </select> </label>
-                                                <span class="description"><?php esc_html_e( 'Show/hide the item estimated delivery date.', 'woo-fly-cart' ); ?> Please install <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-estimated-delivery-date&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Estimated Delivery Date">WPC Estimated Delivery Date</a> to make it work.</span>
+                                                <span class="description"><?php esc_html_e( 'Show/hide the item estimated delivery date.', 'woo-fly-cart' ); ?> Please install <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-estimated-delivery-date&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="WPC Estimated Delivery Date">WPC Estimated Delivery Date</a> to make it work.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -622,7 +654,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                 <label> <select name="woofc_settings[save_for_later]">
                                                         <option value="yes" <?php selected( $save_for_later, 'yes' ); ?>><?php esc_html_e( 'Show', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $save_for_later, 'no' ); ?>><?php esc_html_e( 'Hide', 'woo-fly-cart' ); ?></option>
-                                                    </select> </label> <span class="description">Show/hide the save for later button for each product. If you enable this option, please install and activate <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wc-save-for-later&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Save For Later">WPC Save For Later</a> to make it work.</span>
+                                                    </select> </label> <span class="description">Show/hide the save for later button for each product. If you enable this option, please install and activate <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wc-save-for-later&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="WPC Save For Later">WPC Save For Later</a> to make it work.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -650,7 +684,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                 <label> <select name="woofc_settings[coupon_listing]">
                                                         <option value="yes" <?php selected( $coupon_listing, 'yes' ); ?>><?php esc_html_e( 'Show', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $coupon_listing, 'no' ); ?>><?php esc_html_e( 'Hide', 'woo-fly-cart' ); ?></option>
-                                                    </select> </label> <span class="description">If you enable this option, please install and activate <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-coupon-listing&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Coupon Listing">WPC Coupon Listing</a> to make it work.</span>
+                                                    </select> </label> <span class="description">If you enable this option, please install and activate <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-coupon-listing&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="WPC Coupon Listing">WPC Coupon Listing</a> to make it work.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -679,7 +715,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                 <label> <select name="woofc_settings[free_shipping_bar]">
                                                         <option value="yes" <?php selected( $free_shipping_bar, 'yes' ); ?>><?php esc_html_e( 'Show', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $free_shipping_bar, 'no' ); ?>><?php esc_html_e( 'Hide', 'woo-fly-cart' ); ?></option>
-                                                    </select> </label> <span class="description">If you enable this option, please install and activate <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-free-shipping-bar&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Free Shipping Bar">WPC Free Shipping Bar</a> to make it work.</span>
+                                                    </select> </label> <span class="description">If you enable this option, please install and activate <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-free-shipping-bar&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="WPC Free Shipping Bar">WPC Free Shipping Bar</a> to make it work.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -706,7 +744,8 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Instant checkout', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <select name="woofc_settings[instant_checkout]" class="woofc_instant_checkout">
+                                                    <select name="woofc_settings[instant_checkout]"
+                                                            class="woofc_instant_checkout">
                                                         <option value="yes" <?php selected( $instant_checkout, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $instant_checkout, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
                                                     </select> </label>
@@ -750,28 +789,38 @@ if ( ! function_exists( 'woofc_init' ) ) {
 												?>
                                                 <ul>
                                                     <li>
-                                                        <label><input type="checkbox" name="woofc_settings[suggested][]" value="related" <?php echo esc_attr( in_array( 'related', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Related', 'woo-fly-cart' ); ?>
+                                                        <label><input type="checkbox" name="woofc_settings[suggested][]"
+                                                                      value="related" <?php echo esc_attr( in_array( 'related', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Related', 'woo-fly-cart' ); ?>
                                                         </label></li>
                                                     <li>
-                                                        <label><input type="checkbox" name="woofc_settings[suggested][]" value="up_sells" <?php echo esc_attr( in_array( 'up_sells', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Upsells', 'woo-fly-cart' ); ?>
+                                                        <label><input type="checkbox" name="woofc_settings[suggested][]"
+                                                                      value="up_sells" <?php echo esc_attr( in_array( 'up_sells', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Upsells', 'woo-fly-cart' ); ?>
                                                         </label></li>
                                                     <li>
-                                                        <label><input type="checkbox" name="woofc_settings[suggested][]" value="cross_sells" <?php echo esc_attr( in_array( 'cross_sells', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Cross-sells', 'woo-fly-cart' ); ?>
+                                                        <label><input type="checkbox" name="woofc_settings[suggested][]"
+                                                                      value="cross_sells" <?php echo esc_attr( in_array( 'cross_sells', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Cross-sells', 'woo-fly-cart' ); ?>
                                                         </label></li>
                                                     <li>
-                                                        <label><input type="checkbox" name="woofc_settings[suggested][]" value="wishlist" <?php echo esc_attr( in_array( 'wishlist', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Wishlist', 'woo-fly-cart' ); ?>
+                                                        <label><input type="checkbox" name="woofc_settings[suggested][]"
+                                                                      value="wishlist" <?php echo esc_attr( in_array( 'wishlist', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Wishlist', 'woo-fly-cart' ); ?>
                                                         </label> <span class="description">(from
-                                                            <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-wishlist&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Smart Wishlist">WPC Smart Wishlist</a>)</span>
+                                                            <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-wishlist&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                               class="thickbox" title="WPC Smart Wishlist">WPC Smart Wishlist</a>)</span>
                                                     </li>
                                                     <li>
-                                                        <label><input type="checkbox" name="woofc_settings[suggested][]" value="compare" <?php echo esc_attr( in_array( 'compare', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Compare', 'woo-fly-cart' ); ?>
+                                                        <label><input type="checkbox" name="woofc_settings[suggested][]"
+                                                                      value="compare" <?php echo esc_attr( in_array( 'compare', $suggested ) ? 'checked' : '' ); ?>/> <?php esc_html_e( 'Compare', 'woo-fly-cart' ); ?>
                                                         </label> <span class="description">(from
-                                                        <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-compare&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Smart Compare">WPC Smart Compare</a>)</span>
+                                                        <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-compare&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                           class="thickbox"
+                                                           title="WPC Smart Compare">WPC Smart Compare</a>)</span>
                                                     </li>
                                                 </ul>
                                                 <span class="description">You can use
-													<a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-custom-related-products&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Custom Related Products">WPC Custom Related Products</a> or
-														<a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-smart-linked-products&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Smart Linked Products">WPC Smart Linked Products</a> plugin to configure related/upsells/cross-sells in bulk with smart conditions.</span>
+													<a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-custom-related-products&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                       class="thickbox" title="WPC Custom Related Products">WPC Custom Related Products</a> or
+														<a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-smart-linked-products&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                           class="thickbox" title="WPC Smart Linked Products">WPC Smart Linked Products</a> plugin to configure related/upsells/cross-sells in bulk with smart conditions.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -790,7 +839,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Suggested products limit', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="number" min="1" step="1" name="woofc_settings[suggested_limit]" value="<?php echo esc_attr( self::get_setting( 'suggested_limit', 10 ) ); ?>"/>
+                                                    <input type="number" min="1" step="1"
+                                                           name="woofc_settings[suggested_limit]"
+                                                           value="<?php echo esc_attr( self::get_setting( 'suggested_limit', 10 ) ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -809,7 +860,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                 <label> <select name="woofc_settings[upsell_funnel]">
                                                         <option value="yes" <?php selected( $upsell_funnel, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $upsell_funnel, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
-                                                    </select> </label> <span class="description">Show upsell funnel products from <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-smart-upsell-funnel&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Smart Upsell Funnel">WPC Smart Upsell Funnel</a>.</span>
+                                                    </select> </label> <span class="description">Show upsell funnel products from <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-smart-upsell-funnel&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="WPC Smart Upsell Funnel">WPC Smart Upsell Funnel</a>.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -847,7 +900,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                 <label> <select name="woofc_settings[share]">
                                                         <option value="yes" <?php selected( $share, 'yes' ); ?>><?php esc_html_e( 'Show', 'woo-fly-cart' ); ?></option>
                                                         <option value="no" <?php selected( $share, 'no' ); ?>><?php esc_html_e( 'Hide', 'woo-fly-cart' ); ?></option>
-                                                    </select> </label> <span class="description">If you enable this option, please install and activate <a href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-share-cart&TB_iframe=true&width=800&height=550' ) ); ?>" class="thickbox" title="WPC Share Cart">WPC Share Cart</a> to make it work.</span>
+                                                    </select> </label> <span class="description">If you enable this option, please install and activate <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=wpc-share-cart&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="WPC Share Cart">WPC Share Cart</a> to make it work.</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -864,7 +919,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Continue shopping URL', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="url" class="regular-text code" name="woofc_settings[continue_url]" value="<?php echo self::get_setting( 'continue_url', '' ); ?>"/>
+                                                    <input type="url" class="regular-text code"
+                                                           name="woofc_settings[continue_url]"
+                                                           value="<?php echo self::get_setting( 'continue_url', '' ); ?>"/>
                                                 </label>
                                                 <span class="description"><?php esc_html_e( 'Custom URL for "continue shopping" button. By default, only close the fly cart when clicking on this button.', 'woo-fly-cart' ); ?></span>
                                             </td>
@@ -946,7 +1003,8 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                         <tr>
                                             <th><?php esc_html_e( 'Icon', 'woo-fly-cart' ); ?></th>
                                             <td>
-                                                <label for="woofc_count_icon"></label><select id="woofc_count_icon" name="woofc_settings[count_icon]">
+                                                <label for="woofc_count_icon"></label><select id="woofc_count_icon"
+                                                                                              name="woofc_settings[count_icon]">
 													<?php
 													for ( $i = 1; $i <= 16; $i ++ ) {
 														if ( self::get_setting( 'count_icon', 'woofc-icon-cart7' ) === 'woofc-icon-cart' . $i ) {
@@ -1003,7 +1061,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Custom menu', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_settings[manual_show]" value="<?php echo self::get_setting( 'manual_show', '' ); ?>" placeholder="<?php esc_attr_e( 'button class or id', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_settings[manual_show]"
+                                                           value="<?php echo self::get_setting( 'manual_show', '' ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'button class or id', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                                 <span class="description"><?php printf( /* translators: selector */ esc_html__( 'The class or id of the custom menu. When clicking on it, the fly cart will show up. Example %1$s or %2$s', 'woo-fly-cart' ), '<code>.fly-cart-btn</code>', '<code>#fly-cart-btn</code>' ); ?></span>
                                             </td>
@@ -1028,7 +1089,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Cart heading', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[heading]" value="<?php echo esc_attr( self::localization( 'heading' ) ); ?>" placeholder="<?php esc_attr_e( 'Shopping cart', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[heading]"
+                                                           value="<?php echo esc_attr( self::localization( 'heading' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Shopping cart', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1036,7 +1100,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Close', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[close]" value="<?php echo esc_attr( self::localization( 'close' ) ); ?>" placeholder="<?php esc_attr_e( 'Close', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[close]"
+                                                           value="<?php echo esc_attr( self::localization( 'close' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Close', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1044,7 +1111,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Remove', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[remove]" value="<?php echo esc_attr( self::localization( 'remove' ) ); ?>" placeholder="<?php esc_attr_e( 'Remove', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[remove]"
+                                                           value="<?php echo esc_attr( self::localization( 'remove' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Remove', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1052,7 +1122,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Confirm remove', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[remove_confirm]" value="<?php echo esc_attr( self::localization( 'remove_confirm' ) ); ?>" placeholder="<?php esc_attr_e( 'Do you want to remove this item?', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[remove_confirm]"
+                                                           value="<?php echo esc_attr( self::localization( 'remove_confirm' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Do you want to remove this item?', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1060,7 +1133,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Undo remove', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[remove_undo]" value="<?php echo esc_attr( self::localization( 'remove_undo' ) ); ?>" placeholder="<?php esc_attr_e( 'Undo?', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[remove_undo]"
+                                                           value="<?php echo esc_attr( self::localization( 'remove_undo' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Undo?', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1068,15 +1144,22 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Removed', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[removed]" value="<?php echo esc_attr( self::localization( 'removed' ) ); ?>" placeholder="<?php /* translators: product */
-													esc_attr_e( '%s was removed.', 'woo-fly-cart' ); ?>"/> </label>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[removed]"
+                                                           value="<?php echo esc_attr( self::localization( 'removed' ) ); ?>"
+                                                           placeholder="<?php /* translators: product */
+													       esc_attr_e( '%s was removed.', 'woo-fly-cart' ); ?>"/>
+                                                </label>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th><?php esc_html_e( 'Empty cart', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[empty]" value="<?php echo esc_attr( self::localization( 'empty' ) ); ?>" placeholder="<?php esc_attr_e( 'Empty cart', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[empty]"
+                                                           value="<?php echo esc_attr( self::localization( 'empty' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Empty cart', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1084,7 +1167,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Confirm empty', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[empty_confirm]" value="<?php echo esc_attr( self::localization( 'empty_confirm' ) ); ?>" placeholder="<?php esc_attr_e( 'Do you want to empty the cart?', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[empty_confirm]"
+                                                           value="<?php echo esc_attr( self::localization( 'empty_confirm' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Do you want to empty the cart?', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1092,7 +1178,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Share cart', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[share]" value="<?php echo esc_attr( self::localization( 'share' ) ); ?>" placeholder="<?php esc_attr_e( 'Share cart', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[share]"
+                                                           value="<?php echo esc_attr( self::localization( 'share' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Share cart', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1100,7 +1189,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Subtotal', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[subtotal]" value="<?php echo esc_attr( self::localization( 'subtotal' ) ); ?>" placeholder="<?php esc_attr_e( 'Subtotal', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[subtotal]"
+                                                           value="<?php echo esc_attr( self::localization( 'subtotal' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Subtotal', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1108,7 +1200,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Coupon code', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[coupon_code]" value="<?php echo esc_attr( self::localization( 'coupon_code' ) ); ?>" placeholder="<?php esc_attr_e( 'Coupon code', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[coupon_code]"
+                                                           value="<?php echo esc_attr( self::localization( 'coupon_code' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Coupon code', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1116,7 +1211,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Coupon apply', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[coupon_apply]" value="<?php echo esc_attr( self::localization( 'coupon_apply' ) ); ?>" placeholder="<?php esc_attr_e( 'Apply', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[coupon_apply]"
+                                                           value="<?php echo esc_attr( self::localization( 'coupon_apply' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Apply', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1124,7 +1222,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Shipping', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[shipping]" value="<?php echo esc_attr( self::localization( 'shipping' ) ); ?>" placeholder="<?php esc_attr_e( 'Shipping', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[shipping]"
+                                                           value="<?php echo esc_attr( self::localization( 'shipping' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Shipping', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1132,7 +1233,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Total', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[total]" value="<?php echo esc_attr( self::localization( 'total' ) ); ?>" placeholder="<?php esc_attr_e( 'Total', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[total]"
+                                                           value="<?php echo esc_attr( self::localization( 'total' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Total', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1140,7 +1244,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Cart', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[cart]" value="<?php echo esc_attr( self::localization( 'cart' ) ); ?>" placeholder="<?php esc_attr_e( 'Cart', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[cart]"
+                                                           value="<?php echo esc_attr( self::localization( 'cart' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Cart', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1148,7 +1255,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Checkout', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[checkout]" value="<?php echo esc_attr( self::localization( 'checkout' ) ); ?>" placeholder="<?php esc_attr_e( 'Checkout', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[checkout]"
+                                                           value="<?php echo esc_attr( self::localization( 'checkout' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Checkout', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1156,7 +1266,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Continue shopping', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[continue]" value="<?php echo esc_attr( self::localization( 'continue' ) ); ?>" placeholder="<?php esc_attr_e( 'Continue shopping', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[continue]"
+                                                           value="<?php echo esc_attr( self::localization( 'continue' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'Continue shopping', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1164,7 +1277,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'Suggested products', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[suggested]" value="<?php echo esc_attr( self::localization( 'suggested' ) ); ?>" placeholder="<?php esc_attr_e( 'You may be interested in&hellip;', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[suggested]"
+                                                           value="<?php echo esc_attr( self::localization( 'suggested' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'You may be interested in&hellip;', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1172,7 +1288,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             <th><?php esc_html_e( 'There are no products', 'woo-fly-cart' ); ?></th>
                                             <td>
                                                 <label>
-                                                    <input type="text" class="regular-text" name="woofc_localization[no_products]" value="<?php echo esc_attr( self::localization( 'no_products' ) ); ?>" placeholder="<?php esc_attr_e( 'There are no products in the cart!', 'woo-fly-cart' ); ?>"/>
+                                                    <input type="text" class="regular-text"
+                                                           name="woofc_localization[no_products]"
+                                                           value="<?php echo esc_attr( self::localization( 'no_products' ) ); ?>"
+                                                           placeholder="<?php esc_attr_e( 'There are no products in the cart!', 'woo-fly-cart' ); ?>"/>
                                                 </label>
                                             </td>
                                         </tr>
@@ -1186,7 +1305,8 @@ if ( ! function_exists( 'woofc_init' ) ) {
 							<?php } elseif ( $active_tab === 'premium' ) { ?>
                                 <div class="wpclever_settings_page_content_text">
                                     <p>Get the Premium Version just $29!
-                                        <a href="https://wpclever.net/downloads/fly-cart?utm_source=pro&utm_medium=woofc&utm_campaign=wporg" target="_blank">https://wpclever.net/downloads/fly-cart</a>
+                                        <a href="https://wpclever.net/downloads/fly-cart?utm_source=pro&utm_medium=woofc&utm_campaign=wporg"
+                                           target="_blank">https://wpclever.net/downloads/fly-cart</a>
                                     </p>
                                     <p><strong>Extra features for Premium Version:</strong></p>
                                     <ul style="margin-bottom: 0">
@@ -1204,13 +1324,17 @@ if ( ! function_exists( 'woofc_init' ) ) {
                             </div>
                             <div class="wpclever_settings_page_suggestion_content">
                                 <div>
-                                    To display custom engaging real-time messages on any wished positions, please install
-                                    <a href="https://wordpress.org/plugins/wpc-smart-messages/" target="_blank">WPC Smart Messages</a> plugin. It's free!
+                                    To display custom engaging real-time messages on any wished positions, please
+                                    install
+                                    <a href="https://wordpress.org/plugins/wpc-smart-messages/" target="_blank">WPC
+                                        Smart Messages</a> plugin. It's free!
                                 </div>
                                 <div>
                                     Wanna save your precious time working on variations? Try our brand-new free plugin
-                                    <a href="https://wordpress.org/plugins/wpc-variation-bulk-editor/" target="_blank">WPC Variation Bulk Editor</a> and
-                                    <a href="https://wordpress.org/plugins/wpc-variation-duplicator/" target="_blank">WPC Variation Duplicator</a>.
+                                    <a href="https://wordpress.org/plugins/wpc-variation-bulk-editor/" target="_blank">WPC
+                                        Variation Bulk Editor</a> and
+                                    <a href="https://wordpress.org/plugins/wpc-variation-duplicator/" target="_blank">WPC
+                                        Variation Duplicator</a>.
                                 </div>
                             </div>
                         </div>
