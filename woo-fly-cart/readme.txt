@@ -3,8 +3,8 @@ Contributors: wpclever
 Donate link: https://wpclever.net
 Tags: woocommerce, wpc, fly cart, mini-cart, floating-cart
 Tested up to: 6.8
-Version: 5.9.4
-Stable tag: 5.9.4
+Version: 5.9.5
+Stable tag: 5.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,10 @@ Please try other plugins from us:
 5. Now, whenever you add product into the cart, the mini cart will be shown
 
 == Changelog ==
+
+= 5.9.5 =
+* Updated: Optimized the code
+* Fixed: Minor CSS/JS issues in the backend
 
 = 5.9.4 =
 * Fixed: Minor CSS/JS issues in the backend
