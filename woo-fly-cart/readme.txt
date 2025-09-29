@@ -3,8 +3,8 @@ Contributors: wpclever
 Donate link: https://wpclever.net
 Tags: woocommerce, wpc, fly cart, mini-cart, floating-cart
 Tested up to: 6.8
-Version: 5.9.5
-Stable tag: 5.9.5
+Version: 5.9.6
+Stable tag: 5.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to upd
 
 == Description ==
 
-This strongly responsive **WPC Fly Cart for WooCommerce** plugin empowers your site with the superpower of adding products to the cart without leaving the current page or reloading the page manually. In addition, users are entitled to review their order, proceed to checkout or continue shopping - all actions are triggered in just one single screen. Meanwhile, it is possible for WPC Fly Cart to be added as an overlay on any page, be it the archive or product page.
+This is strongly responsive **WPC Fly Cart for WooCommerce** plugin empowers your site with the superpower of adding products to the cart without leaving the current page or reloading the page manually. In addition, users are entitled to review their order, proceed to checkout or continue shopping - all actions are triggered in just one single screen. Meanwhile, it is possible for WPC Fly Cart to be added as an overlay on any page, be it the archive or product page.
 
 = Live demo =
 
@@ -42,7 +42,7 @@ Visit our [live demo 01](https://demo.wpclever.net/woofc/?utm_source=content&utm
 - Enable/disable shipping cost and shipping calculation
 - Lifetime access to dedicated plugin updates & customization support
 
-In order to display the Fly Cart popup on single product pages without reloading the page, please install the [WPC AJAX Add to Cart](https://wordpress.org/plugins/wpc-ajax-add-to-cart/) plugin to assist with a nicer experience.
+To display the Fly Cart popup on single product pages without reloading the page, please install the [WPC AJAX Add to Cart](https://wordpress.org/plugins/wpc-ajax-add-to-cart/) plugin to assist with a nicer experience.
 
 = Need more features? =
 
@@ -64,11 +64,15 @@ Please try other plugins from us:
 
 1. Please make sure that you installed WooCommerce
 2. Go to Plugins in your dashboard and select "Add New"
-3. Search for "WPC Fly Cart", Install & Activate it
+3. Search for "WPC Fly Cart," Install & Activate it
 4. Go to WPClever > Fly Cart and customize as you want
-5. Now, whenever you add product into the cart, the mini cart will be shown
+5. Now, whenever you add a product into the cart, the mini cart will be shown
 
 == Changelog ==
+
+= 5.9.6 =
+* Fixed: Minor CSS/JS issues in the backend
+* Updated: Compatible with WP 6.8 & Woo 10.2
 
 = 5.9.5 =
 * Updated: Optimized the code
