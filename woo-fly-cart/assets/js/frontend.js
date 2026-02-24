@@ -17,6 +17,10 @@
                 } else {
                     woofc_show_cart();
                 }
+
+                if (woofc_vars.confetti) {
+                    woofc_confetti();
+                }
             }, woofc_vars.delay);
         }
 
@@ -38,6 +42,10 @@
         if (woofc_vars.auto_show === 'yes') {
             setTimeout(function () {
                 woofc_show_cart();
+
+                if (woofc_vars.confetti) {
+                    woofc_confetti();
+                }
             }, woofc_vars.delay);
         }
 
@@ -503,4 +511,12 @@ function woofc_float_remainder(val, step) {
     var valInt = parseInt(val.toFixed(decCount).replace('.', ''));
     var stepInt = parseInt(step.toFixed(decCount).replace('.', ''));
     return (valInt % stepInt) / Math.pow(10, decCount);
+}
+
+function woofc_confetti(id = 'woofc-canvas') {
+    var canvas = document.getElementById(id);
+
+    canvas.confetti = canvas.confetti || confetti.create(canvas, {resize: true});
+
+    canvas.confetti(woofc_vars.confetti_params);
 }

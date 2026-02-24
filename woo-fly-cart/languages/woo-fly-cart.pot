@@ -1,15 +1,15 @@
-# Copyright (C) 2025 WPClever
+# Copyright (C) 2026 WPClever
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPC Fly Cart for WooCommerce 5.9.9\n"
+"Project-Id-Version: WPC Fly Cart for WooCommerce 6.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-fly-cart\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-12T09:02:29+00:00\n"
+"POT-Creation-Date: 2026-02-24T09:06:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-fly-cart\n"
@@ -39,807 +39,817 @@ msgstr ""
 msgid "https://wpclever.net"
 msgstr ""
 
-#: wpc-fly-cart.php:258
-#: wpc-fly-cart.php:1206
+#: wpc-fly-cart.php:264
+#: wpc-fly-cart.php:1230
 msgid "Do you want to empty the cart?"
 msgstr ""
 
-#: wpc-fly-cart.php:259
-#: wpc-fly-cart.php:1161
+#: wpc-fly-cart.php:265
+#: wpc-fly-cart.php:1185
 msgid "Do you want to remove this item?"
 msgstr ""
 
-#: wpc-fly-cart.php:260
-#: wpc-fly-cart.php:1172
+#: wpc-fly-cart.php:266
+#: wpc-fly-cart.php:1196
 msgid "Undo?"
 msgstr ""
 
 #. translators: product
-#: wpc-fly-cart.php:261
-#: wpc-fly-cart.php:1184
+#: wpc-fly-cart.php:267
+#: wpc-fly-cart.php:1208
 #, php-format
 msgid "%s was removed."
 msgstr ""
 
-#: wpc-fly-cart.php:314
-#: wpc-fly-cart.php:394
+#: wpc-fly-cart.php:327
+#: wpc-fly-cart.php:407
 msgid "Settings"
 msgstr ""
 
-#: wpc-fly-cart.php:315
-#: wpc-fly-cart.php:403
+#: wpc-fly-cart.php:328
+#: wpc-fly-cart.php:416
 msgid "Premium Version"
 msgstr ""
 
-#: wpc-fly-cart.php:331
+#: wpc-fly-cart.php:344
 msgid "Community support"
 msgstr ""
 
-#: wpc-fly-cart.php:355
-#: wpc-fly-cart.php:369
+#: wpc-fly-cart.php:368
+#: wpc-fly-cart.php:382
 msgid "WPC Fly Cart"
 msgstr ""
 
-#: wpc-fly-cart.php:355
+#: wpc-fly-cart.php:368
 msgid "Fly Cart"
 msgstr ""
 
-#: wpc-fly-cart.php:369
+#: wpc-fly-cart.php:382
 msgid "Premium"
 msgstr ""
 
 #. translators: stars
-#: wpc-fly-cart.php:372
+#: wpc-fly-cart.php:385
 #, php-format
 msgid "Thank you for using our plugin! If you are satisfied, please reward it a full five-star %s rating."
 msgstr ""
 
-#: wpc-fly-cart.php:375
+#: wpc-fly-cart.php:388
 msgid "Reviews"
 msgstr ""
 
-#: wpc-fly-cart.php:377
+#: wpc-fly-cart.php:390
 msgid "Changelog"
 msgstr ""
 
-#: wpc-fly-cart.php:379
+#: wpc-fly-cart.php:392
 msgid "Discussion"
 msgstr ""
 
-#: wpc-fly-cart.php:387
+#: wpc-fly-cart.php:400
 msgid "Settings updated."
 msgstr ""
 
-#: wpc-fly-cart.php:398
-#: wpc-fly-cart.php:1116
+#: wpc-fly-cart.php:411
+#: wpc-fly-cart.php:1140
 msgid "Localization"
 msgstr ""
 
-#: wpc-fly-cart.php:407
+#: wpc-fly-cart.php:420
 msgid "Essential Kit"
 msgstr ""
 
-#: wpc-fly-cart.php:462
+#: wpc-fly-cart.php:476
 msgid "General"
 msgstr ""
 
-#: wpc-fly-cart.php:463
+#: wpc-fly-cart.php:477
 msgid "General settings for the fly cart."
 msgstr ""
 
-#: wpc-fly-cart.php:466
+#: wpc-fly-cart.php:480
 msgid "Open on AJAX add to cart"
 msgstr ""
 
-#: wpc-fly-cart.php:469
-#: wpc-fly-cart.php:479
-#: wpc-fly-cart.php:489
-#: wpc-fly-cart.php:508
-#: wpc-fly-cart.php:530
-#: wpc-fly-cart.php:588
-#: wpc-fly-cart.php:778
-#: wpc-fly-cart.php:789
-#: wpc-fly-cart.php:881
-#: wpc-fly-cart.php:890
-#: wpc-fly-cart.php:901
-#: wpc-fly-cart.php:920
-#: wpc-fly-cart.php:962
-#: wpc-fly-cart.php:972
-#: wpc-fly-cart.php:982
-#: wpc-fly-cart.php:1016
-#: wpc-fly-cart.php:1053
+#: wpc-fly-cart.php:483
+#: wpc-fly-cart.php:493
+#: wpc-fly-cart.php:503
+#: wpc-fly-cart.php:513
+#: wpc-fly-cart.php:532
+#: wpc-fly-cart.php:554
+#: wpc-fly-cart.php:612
+#: wpc-fly-cart.php:802
+#: wpc-fly-cart.php:813
+#: wpc-fly-cart.php:905
+#: wpc-fly-cart.php:914
+#: wpc-fly-cart.php:925
+#: wpc-fly-cart.php:944
+#: wpc-fly-cart.php:986
+#: wpc-fly-cart.php:996
+#: wpc-fly-cart.php:1006
+#: wpc-fly-cart.php:1040
+#: wpc-fly-cart.php:1077
 msgid "Yes"
 msgstr ""
 
-#: wpc-fly-cart.php:470
-#: wpc-fly-cart.php:480
-#: wpc-fly-cart.php:490
-#: wpc-fly-cart.php:509
-#: wpc-fly-cart.php:531
-#: wpc-fly-cart.php:589
-#: wpc-fly-cart.php:611
-#: wpc-fly-cart.php:779
-#: wpc-fly-cart.php:790
-#: wpc-fly-cart.php:859
-#: wpc-fly-cart.php:882
-#: wpc-fly-cart.php:891
-#: wpc-fly-cart.php:902
-#: wpc-fly-cart.php:921
-#: wpc-fly-cart.php:963
-#: wpc-fly-cart.php:973
-#: wpc-fly-cart.php:983
-#: wpc-fly-cart.php:1017
-#: wpc-fly-cart.php:1054
+#: wpc-fly-cart.php:484
+#: wpc-fly-cart.php:494
+#: wpc-fly-cart.php:504
+#: wpc-fly-cart.php:514
+#: wpc-fly-cart.php:533
+#: wpc-fly-cart.php:555
+#: wpc-fly-cart.php:613
+#: wpc-fly-cart.php:635
+#: wpc-fly-cart.php:803
+#: wpc-fly-cart.php:814
+#: wpc-fly-cart.php:883
+#: wpc-fly-cart.php:906
+#: wpc-fly-cart.php:915
+#: wpc-fly-cart.php:926
+#: wpc-fly-cart.php:945
+#: wpc-fly-cart.php:987
+#: wpc-fly-cart.php:997
+#: wpc-fly-cart.php:1007
+#: wpc-fly-cart.php:1041
+#: wpc-fly-cart.php:1078
 msgid "No"
 msgstr ""
 
 #. translators: link
-#: wpc-fly-cart.php:472
+#: wpc-fly-cart.php:486
 #, php-format
 msgid "The fly cart will be opened immediately after whenever click to AJAX Add to cart buttons? See %1$s \"Add to cart behaviour\" setting %2$s"
 msgstr ""
 
-#: wpc-fly-cart.php:476
+#: wpc-fly-cart.php:490
 msgid "Open on normal add to cart"
 msgstr ""
 
-#: wpc-fly-cart.php:482
+#: wpc-fly-cart.php:496
 msgid "The fly cart will be opened immediately after whenever click to normal Add to cart buttons (AJAX is not enable) or Add to cart button in single product page?"
 msgstr ""
 
-#: wpc-fly-cart.php:486
+#: wpc-fly-cart.php:500
+msgid "Confetti effect"
+msgstr ""
+
+#: wpc-fly-cart.php:506
+msgid "Add a confetti effect each time a product is added to the shopping cart."
+msgstr ""
+
+#: wpc-fly-cart.php:510
 msgid "Reverse items"
 msgstr ""
 
-#: wpc-fly-cart.php:495
+#: wpc-fly-cart.php:519
 msgid "Overlay layer"
 msgstr ""
 
-#: wpc-fly-cart.php:498
-#: wpc-fly-cart.php:598
-#: wpc-fly-cart.php:621
-#: wpc-fly-cart.php:642
-#: wpc-fly-cart.php:654
-#: wpc-fly-cart.php:664
-#: wpc-fly-cart.php:674
-#: wpc-fly-cart.php:685
-#: wpc-fly-cart.php:694
-#: wpc-fly-cart.php:704
-#: wpc-fly-cart.php:715
-#: wpc-fly-cart.php:725
-#: wpc-fly-cart.php:735
-#: wpc-fly-cart.php:746
-#: wpc-fly-cart.php:756
-#: wpc-fly-cart.php:910
-#: wpc-fly-cart.php:930
-#: wpc-fly-cart.php:941
+#: wpc-fly-cart.php:522
+#: wpc-fly-cart.php:622
+#: wpc-fly-cart.php:645
+#: wpc-fly-cart.php:666
+#: wpc-fly-cart.php:678
+#: wpc-fly-cart.php:688
+#: wpc-fly-cart.php:698
+#: wpc-fly-cart.php:709
+#: wpc-fly-cart.php:718
+#: wpc-fly-cart.php:728
+#: wpc-fly-cart.php:739
+#: wpc-fly-cart.php:749
+#: wpc-fly-cart.php:759
+#: wpc-fly-cart.php:770
+#: wpc-fly-cart.php:780
+#: wpc-fly-cart.php:934
+#: wpc-fly-cart.php:954
+#: wpc-fly-cart.php:965
 msgid "Show"
 msgstr ""
 
-#: wpc-fly-cart.php:499
-#: wpc-fly-cart.php:599
-#: wpc-fly-cart.php:622
-#: wpc-fly-cart.php:631
-#: wpc-fly-cart.php:643
+#: wpc-fly-cart.php:523
+#: wpc-fly-cart.php:623
+#: wpc-fly-cart.php:646
 #: wpc-fly-cart.php:655
-#: wpc-fly-cart.php:665
-#: wpc-fly-cart.php:675
-#: wpc-fly-cart.php:686
-#: wpc-fly-cart.php:695
-#: wpc-fly-cart.php:705
-#: wpc-fly-cart.php:716
-#: wpc-fly-cart.php:726
-#: wpc-fly-cart.php:736
-#: wpc-fly-cart.php:747
-#: wpc-fly-cart.php:757
-#: wpc-fly-cart.php:768
-#: wpc-fly-cart.php:911
-#: wpc-fly-cart.php:931
-#: wpc-fly-cart.php:942
+#: wpc-fly-cart.php:667
+#: wpc-fly-cart.php:679
+#: wpc-fly-cart.php:689
+#: wpc-fly-cart.php:699
+#: wpc-fly-cart.php:710
+#: wpc-fly-cart.php:719
+#: wpc-fly-cart.php:729
+#: wpc-fly-cart.php:740
+#: wpc-fly-cart.php:750
+#: wpc-fly-cart.php:760
+#: wpc-fly-cart.php:771
+#: wpc-fly-cart.php:781
+#: wpc-fly-cart.php:792
+#: wpc-fly-cart.php:935
+#: wpc-fly-cart.php:955
+#: wpc-fly-cart.php:966
 msgid "Hide"
 msgstr ""
 
-#: wpc-fly-cart.php:501
+#: wpc-fly-cart.php:525
 msgid "If you hide the overlay layer, the buyer still can work on your site when the fly cart is opening."
 msgstr ""
 
-#: wpc-fly-cart.php:505
+#: wpc-fly-cart.php:529
 msgid "Use perfect-scrollbar"
 msgstr ""
 
 #. translators: link
-#: wpc-fly-cart.php:511
+#: wpc-fly-cart.php:535
 #, php-format
 msgid "Read more about %s"
 msgstr ""
 
-#: wpc-fly-cart.php:515
-#: wpc-fly-cart.php:1022
+#: wpc-fly-cart.php:539
+#: wpc-fly-cart.php:1046
 msgid "Position"
 msgstr ""
 
-#: wpc-fly-cart.php:518
+#: wpc-fly-cart.php:542
 msgid "Right"
 msgstr ""
 
-#: wpc-fly-cart.php:519
+#: wpc-fly-cart.php:543
 msgid "Left"
 msgstr ""
 
-#: wpc-fly-cart.php:520
+#: wpc-fly-cart.php:544
 msgid "Top"
 msgstr ""
 
-#: wpc-fly-cart.php:521
+#: wpc-fly-cart.php:545
 msgid "Bottom"
 msgstr ""
 
-#: wpc-fly-cart.php:522
+#: wpc-fly-cart.php:546
 msgid "Center"
 msgstr ""
 
-#: wpc-fly-cart.php:527
+#: wpc-fly-cart.php:551
 msgid "Effect"
 msgstr ""
 
-#: wpc-fly-cart.php:533
+#: wpc-fly-cart.php:557
 msgid "Enable/disable slide effect."
 msgstr ""
 
-#: wpc-fly-cart.php:537
+#: wpc-fly-cart.php:561
 msgid "Style"
 msgstr ""
 
-#: wpc-fly-cart.php:541
+#: wpc-fly-cart.php:565
 msgid "Color background"
 msgstr ""
 
-#: wpc-fly-cart.php:542
+#: wpc-fly-cart.php:566
 msgid "White background"
 msgstr ""
 
-#: wpc-fly-cart.php:543
+#: wpc-fly-cart.php:567
 msgid "Color background, no thumbnail"
 msgstr ""
 
-#: wpc-fly-cart.php:544
+#: wpc-fly-cart.php:568
 msgid "White background, no thumbnail"
 msgstr ""
 
-#: wpc-fly-cart.php:545
-#: wpc-fly-cart.php:570
+#: wpc-fly-cart.php:569
+#: wpc-fly-cart.php:594
 msgid "Background image"
 msgstr ""
 
-#: wpc-fly-cart.php:559
+#: wpc-fly-cart.php:583
 msgid "Color"
 msgstr ""
 
 #. translators: color
-#: wpc-fly-cart.php:566
+#: wpc-fly-cart.php:590
 #, php-format
 msgid "Background or text color of selected style, default %s"
 msgstr ""
 
-#: wpc-fly-cart.php:578
+#: wpc-fly-cart.php:602
 msgid "Upload image"
 msgstr ""
 
-#: wpc-fly-cart.php:585
+#: wpc-fly-cart.php:609
 msgid "Rounded"
 msgstr ""
 
-#: wpc-fly-cart.php:591
+#: wpc-fly-cart.php:615
 msgid "Enable/disable rounded style for elements."
 msgstr ""
 
-#: wpc-fly-cart.php:595
+#: wpc-fly-cart.php:619
 msgid "Close button"
 msgstr ""
 
-#: wpc-fly-cart.php:601
+#: wpc-fly-cart.php:625
 msgid "Show/hide the close button."
 msgstr ""
 
-#: wpc-fly-cart.php:605
+#: wpc-fly-cart.php:629
 msgid "Link to individual product"
 msgstr ""
 
-#: wpc-fly-cart.php:608
+#: wpc-fly-cart.php:632
 msgid "Yes, open in the same tab"
 msgstr ""
 
-#: wpc-fly-cart.php:609
+#: wpc-fly-cart.php:633
 msgid "Yes, open in the new tab"
 msgstr ""
 
-#: wpc-fly-cart.php:610
+#: wpc-fly-cart.php:634
 msgid "Yes, open quick view popup"
 msgstr ""
 
-#: wpc-fly-cart.php:618
+#: wpc-fly-cart.php:642
 msgid "Item data"
 msgstr ""
 
-#: wpc-fly-cart.php:624
+#: wpc-fly-cart.php:648
 msgid "Show/hide the item data under title."
 msgstr ""
 
-#: wpc-fly-cart.php:628
+#: wpc-fly-cart.php:652
 msgid "Item price"
 msgstr ""
 
-#: wpc-fly-cart.php:632
+#: wpc-fly-cart.php:656
 msgid "Price"
 msgstr ""
 
-#: wpc-fly-cart.php:633
-#: wpc-fly-cart.php:682
-#: wpc-fly-cart.php:1222
-#: wpc-fly-cart.php:1228
-#: wpc-fly-cart.php:1745
+#: wpc-fly-cart.php:657
+#: wpc-fly-cart.php:706
+#: wpc-fly-cart.php:1246
+#: wpc-fly-cart.php:1252
+#: wpc-fly-cart.php:1769
 msgid "Subtotal"
 msgstr ""
 
-#: wpc-fly-cart.php:635
+#: wpc-fly-cart.php:659
 msgid "Show/hide the item price or subtotal under title."
 msgstr ""
 
-#: wpc-fly-cart.php:639
+#: wpc-fly-cart.php:663
 msgid "Item estimated delivery date"
 msgstr ""
 
-#: wpc-fly-cart.php:645
+#: wpc-fly-cart.php:669
 msgid "Show/hide the item estimated delivery date."
 msgstr ""
 
-#: wpc-fly-cart.php:651
+#: wpc-fly-cart.php:675
 msgid "Plus/minus button"
 msgstr ""
 
-#: wpc-fly-cart.php:657
+#: wpc-fly-cart.php:681
 msgid "Show/hide the plus/minus button."
 msgstr ""
 
-#: wpc-fly-cart.php:661
+#: wpc-fly-cart.php:685
 msgid "Item remove"
 msgstr ""
 
-#: wpc-fly-cart.php:667
+#: wpc-fly-cart.php:691
 msgid "Show/hide the remove button for each item."
 msgstr ""
 
-#: wpc-fly-cart.php:671
+#: wpc-fly-cart.php:695
 msgid "Save for later"
 msgstr ""
 
-#: wpc-fly-cart.php:691
+#: wpc-fly-cart.php:715
 msgid "Coupon"
 msgstr ""
 
-#: wpc-fly-cart.php:701
+#: wpc-fly-cart.php:725
 msgid "Coupon listing"
 msgstr ""
 
-#: wpc-fly-cart.php:712
+#: wpc-fly-cart.php:736
 msgid "Shipping cost"
 msgstr ""
 
-#: wpc-fly-cart.php:722
+#: wpc-fly-cart.php:746
 msgid "Shipping calculator"
 msgstr ""
 
-#: wpc-fly-cart.php:732
+#: wpc-fly-cart.php:756
 msgid "Free shipping bar"
 msgstr ""
 
-#: wpc-fly-cart.php:743
+#: wpc-fly-cart.php:767
 msgid "Tax"
 msgstr ""
 
-#: wpc-fly-cart.php:749
+#: wpc-fly-cart.php:773
 msgid "It requires enabling tax and excluding tax from display prices during cart and checkout."
 msgstr ""
 
-#: wpc-fly-cart.php:753
-#: wpc-fly-cart.php:1266
-#: wpc-fly-cart.php:1272
-#: wpc-fly-cart.php:1783
+#: wpc-fly-cart.php:777
+#: wpc-fly-cart.php:1290
+#: wpc-fly-cart.php:1296
+#: wpc-fly-cart.php:1807
 msgid "Total"
 msgstr ""
 
-#: wpc-fly-cart.php:762
+#: wpc-fly-cart.php:786
 msgid "Action buttons"
 msgstr ""
 
-#: wpc-fly-cart.php:765
+#: wpc-fly-cart.php:789
 msgid "Cart & Checkout"
 msgstr ""
 
-#: wpc-fly-cart.php:766
+#: wpc-fly-cart.php:790
 msgid "Cart only"
 msgstr ""
 
-#: wpc-fly-cart.php:767
+#: wpc-fly-cart.php:791
 msgid "Checkout only"
 msgstr ""
 
-#: wpc-fly-cart.php:773
+#: wpc-fly-cart.php:797
 msgid "Instant checkout"
 msgstr ""
 
-#: wpc-fly-cart.php:781
+#: wpc-fly-cart.php:805
 msgid "If enable this option, buyer can checkout directly on the fly cart."
 msgstr ""
 
-#: wpc-fly-cart.php:786
+#: wpc-fly-cart.php:810
 msgid "Open instant checkout immediately"
 msgstr ""
 
-#: wpc-fly-cart.php:792
+#: wpc-fly-cart.php:816
 msgid "Open instant checkout form immediately after adding a product to the cart."
 msgstr ""
 
-#: wpc-fly-cart.php:796
-#: wpc-fly-cart.php:1310
+#: wpc-fly-cart.php:820
+#: wpc-fly-cart.php:1334
 msgid "Suggested products"
 msgstr ""
 
-#: wpc-fly-cart.php:822
+#: wpc-fly-cart.php:846
 msgid "Related"
 msgstr ""
 
-#: wpc-fly-cart.php:826
+#: wpc-fly-cart.php:850
 msgid "Upsells"
 msgstr ""
 
-#: wpc-fly-cart.php:830
+#: wpc-fly-cart.php:854
 msgid "Cross-sells"
 msgstr ""
 
-#: wpc-fly-cart.php:834
+#: wpc-fly-cart.php:858
 msgid "Wishlist"
 msgstr ""
 
-#: wpc-fly-cart.php:841
+#: wpc-fly-cart.php:865
 msgid "Compare"
 msgstr ""
 
-#: wpc-fly-cart.php:856
+#: wpc-fly-cart.php:880
 msgid "Suggested for empty cart"
 msgstr ""
 
-#: wpc-fly-cart.php:860
+#: wpc-fly-cart.php:884
 msgid "Recent products"
 msgstr ""
 
-#: wpc-fly-cart.php:861
+#: wpc-fly-cart.php:885
 msgid "On-sale products"
 msgstr ""
 
-#: wpc-fly-cart.php:862
+#: wpc-fly-cart.php:886
 msgid "Featured products"
 msgstr ""
 
-#: wpc-fly-cart.php:863
+#: wpc-fly-cart.php:887
 msgid "Random products"
 msgstr ""
 
-#: wpc-fly-cart.php:868
+#: wpc-fly-cart.php:892
 msgid "Suggested products limit"
 msgstr ""
 
-#: wpc-fly-cart.php:878
+#: wpc-fly-cart.php:902
 msgid "Suggested products carousel"
 msgstr ""
 
-#: wpc-fly-cart.php:887
+#: wpc-fly-cart.php:911
 msgid "Upsell funnel products"
 msgstr ""
 
-#: wpc-fly-cart.php:898
+#: wpc-fly-cart.php:922
 msgid "Upsell funnel products carousel"
 msgstr ""
 
-#: wpc-fly-cart.php:907
-#: wpc-fly-cart.php:1189
-#: wpc-fly-cart.php:1195
-#: wpc-fly-cart.php:1733
+#: wpc-fly-cart.php:931
+#: wpc-fly-cart.php:1213
+#: wpc-fly-cart.php:1219
+#: wpc-fly-cart.php:1757
 msgid "Empty cart"
 msgstr ""
 
-#: wpc-fly-cart.php:913
+#: wpc-fly-cart.php:937
 msgid "Show/hide the empty cart button under the product list."
 msgstr ""
 
-#: wpc-fly-cart.php:917
-#: wpc-fly-cart.php:1200
+#: wpc-fly-cart.php:941
+#: wpc-fly-cart.php:1224
 msgid "Confirm empty"
 msgstr ""
 
-#: wpc-fly-cart.php:923
+#: wpc-fly-cart.php:947
 msgid "Enable/disable confirm before emptying the cart."
 msgstr ""
 
-#: wpc-fly-cart.php:927
-#: wpc-fly-cart.php:1211
-#: wpc-fly-cart.php:1217
-#: wpc-fly-cart.php:1737
+#: wpc-fly-cart.php:951
+#: wpc-fly-cart.php:1235
+#: wpc-fly-cart.php:1241
+#: wpc-fly-cart.php:1761
 msgid "Share cart"
 msgstr ""
 
-#: wpc-fly-cart.php:938
-#: wpc-fly-cart.php:1299
-#: wpc-fly-cart.php:1305
-#: wpc-fly-cart.php:1831
+#: wpc-fly-cart.php:962
+#: wpc-fly-cart.php:1323
+#: wpc-fly-cart.php:1329
+#: wpc-fly-cart.php:1855
 msgid "Continue shopping"
 msgstr ""
 
-#: wpc-fly-cart.php:944
+#: wpc-fly-cart.php:968
 msgid "Show/hide the continue shopping button at the end of fly cart."
 msgstr ""
 
-#: wpc-fly-cart.php:948
+#: wpc-fly-cart.php:972
 msgid "Continue shopping URL"
 msgstr ""
 
-#: wpc-fly-cart.php:955
+#: wpc-fly-cart.php:979
 msgid "Custom URL for \"continue shopping\" button. By default, only close the fly cart when clicking on this button."
 msgstr ""
 
-#: wpc-fly-cart.php:959
-#: wpc-fly-cart.php:1155
+#: wpc-fly-cart.php:983
+#: wpc-fly-cart.php:1179
 msgid "Confirm remove"
 msgstr ""
 
-#: wpc-fly-cart.php:965
+#: wpc-fly-cart.php:989
 msgid "Enable/disable confirm before removing a product."
 msgstr ""
 
-#: wpc-fly-cart.php:969
-#: wpc-fly-cart.php:1166
+#: wpc-fly-cart.php:993
+#: wpc-fly-cart.php:1190
 msgid "Undo remove"
 msgstr ""
 
-#: wpc-fly-cart.php:975
+#: wpc-fly-cart.php:999
 msgid "Enable/disable undo after removing a product."
 msgstr ""
 
-#: wpc-fly-cart.php:979
+#: wpc-fly-cart.php:1003
 msgid "Reload the cart"
 msgstr ""
 
-#: wpc-fly-cart.php:985
+#: wpc-fly-cart.php:1009
 msgid "The cart will be reloaded when opening the page? If you use the cache for your site, please turn on this option."
 msgstr ""
 
-#: wpc-fly-cart.php:989
+#: wpc-fly-cart.php:1013
 msgid "Hide on pages"
 msgstr ""
 
-#: wpc-fly-cart.php:1005
+#: wpc-fly-cart.php:1029
 msgid "Hide the fly cart on these pages."
 msgstr ""
 
-#: wpc-fly-cart.php:1009
+#: wpc-fly-cart.php:1033
 msgid "Bubble"
 msgstr ""
 
-#: wpc-fly-cart.php:1010
+#: wpc-fly-cart.php:1034
 msgid "Settings for the bubble."
 msgstr ""
 
-#: wpc-fly-cart.php:1013
+#: wpc-fly-cart.php:1037
 msgid "Enable"
 msgstr ""
 
-#: wpc-fly-cart.php:1025
+#: wpc-fly-cart.php:1049
 msgid "Top Left"
 msgstr ""
 
-#: wpc-fly-cart.php:1026
+#: wpc-fly-cart.php:1050
 msgid "Top Right"
 msgstr ""
 
-#: wpc-fly-cart.php:1027
+#: wpc-fly-cart.php:1051
 msgid "Bottom Left"
 msgstr ""
 
-#: wpc-fly-cart.php:1028
+#: wpc-fly-cart.php:1052
 msgid "Bottom Right"
 msgstr ""
 
-#: wpc-fly-cart.php:1033
+#: wpc-fly-cart.php:1057
 msgid "Icon"
 msgstr ""
 
-#: wpc-fly-cart.php:1050
+#: wpc-fly-cart.php:1074
 msgid "Hide if empty"
 msgstr ""
 
-#: wpc-fly-cart.php:1056
+#: wpc-fly-cart.php:1080
 msgid "Hide the bubble if the cart is empty?"
 msgstr ""
 
-#: wpc-fly-cart.php:1060
+#: wpc-fly-cart.php:1084
 msgid "Menu"
 msgstr ""
 
-#: wpc-fly-cart.php:1061
+#: wpc-fly-cart.php:1085
 msgid "Settings for cart menu item."
 msgstr ""
 
-#: wpc-fly-cart.php:1064
+#: wpc-fly-cart.php:1088
 msgid "Menu(s)"
 msgstr ""
 
-#: wpc-fly-cart.php:1083
+#: wpc-fly-cart.php:1107
 msgid "Haven't any menu yet. Please go to Appearance > Menus to create one."
 msgstr ""
 
-#: wpc-fly-cart.php:1086
+#: wpc-fly-cart.php:1110
 msgid "Choose the menu(s) you want to add the cart at the end."
 msgstr ""
 
-#: wpc-fly-cart.php:1090
+#: wpc-fly-cart.php:1114
 msgid "Custom menu"
 msgstr ""
 
-#: wpc-fly-cart.php:1096
+#: wpc-fly-cart.php:1120
 msgid "button class or id"
 msgstr ""
 
 #. translators: selector
-#: wpc-fly-cart.php:1098
+#: wpc-fly-cart.php:1122
 #, php-format
 msgid "The class or id of the custom menu. When clicking on it, the fly cart will show up. Example %1$s or %2$s"
 msgstr ""
 
-#: wpc-fly-cart.php:1107
-#: wpc-fly-cart.php:1337
+#: wpc-fly-cart.php:1131
+#: wpc-fly-cart.php:1361
 msgid "import / export"
 msgstr ""
 
-#: wpc-fly-cart.php:1118
+#: wpc-fly-cart.php:1142
 msgid "Leave blank to use the default text and its equivalent translation in multiple languages."
 msgstr ""
 
-#: wpc-fly-cart.php:1122
+#: wpc-fly-cart.php:1146
 msgid "Cart heading"
 msgstr ""
 
-#: wpc-fly-cart.php:1128
-#: wpc-fly-cart.php:1518
+#: wpc-fly-cart.php:1152
+#: wpc-fly-cart.php:1542
 msgid "Shopping cart"
 msgstr ""
 
-#: wpc-fly-cart.php:1133
-#: wpc-fly-cart.php:1139
-#: wpc-fly-cart.php:1521
+#: wpc-fly-cart.php:1157
+#: wpc-fly-cart.php:1163
+#: wpc-fly-cart.php:1545
 msgid "Close"
 msgstr ""
 
 #. translators: product
-#: wpc-fly-cart.php:1144
-#: wpc-fly-cart.php:1150
-#: wpc-fly-cart.php:1666
+#: wpc-fly-cart.php:1168
+#: wpc-fly-cart.php:1174
+#: wpc-fly-cart.php:1690
 msgid "Remove"
 msgstr ""
 
-#: wpc-fly-cart.php:1177
+#: wpc-fly-cart.php:1201
 msgid "Removed"
 msgstr ""
 
-#: wpc-fly-cart.php:1233
-#: wpc-fly-cart.php:1239
+#: wpc-fly-cart.php:1257
+#: wpc-fly-cart.php:1263
 msgid "Coupon code"
 msgstr ""
 
-#: wpc-fly-cart.php:1244
+#: wpc-fly-cart.php:1268
 msgid "Coupon apply"
 msgstr ""
 
-#: wpc-fly-cart.php:1250
+#: wpc-fly-cart.php:1274
 msgid "Apply"
 msgstr ""
 
-#: wpc-fly-cart.php:1255
-#: wpc-fly-cart.php:1261
+#: wpc-fly-cart.php:1279
+#: wpc-fly-cart.php:1285
 msgid "Shipping"
 msgstr ""
 
-#: wpc-fly-cart.php:1277
-#: wpc-fly-cart.php:1283
-#: wpc-fly-cart.php:1791
-#: wpc-fly-cart.php:1795
+#: wpc-fly-cart.php:1301
+#: wpc-fly-cart.php:1307
+#: wpc-fly-cart.php:1815
+#: wpc-fly-cart.php:1819
 msgid "Cart"
 msgstr ""
 
-#: wpc-fly-cart.php:1288
-#: wpc-fly-cart.php:1294
-#: wpc-fly-cart.php:1791
-#: wpc-fly-cart.php:1800
+#: wpc-fly-cart.php:1312
+#: wpc-fly-cart.php:1318
+#: wpc-fly-cart.php:1815
+#: wpc-fly-cart.php:1824
 msgid "Checkout"
 msgstr ""
 
-#: wpc-fly-cart.php:1316
-#: wpc-fly-cart.php:1853
+#: wpc-fly-cart.php:1340
+#: wpc-fly-cart.php:1881
 msgid "You may be interested in&hellip;"
 msgstr ""
 
-#: wpc-fly-cart.php:1321
+#: wpc-fly-cart.php:1345
 msgid "There are no products"
 msgstr ""
 
-#: wpc-fly-cart.php:1327
-#: wpc-fly-cart.php:1677
+#: wpc-fly-cart.php:1351
+#: wpc-fly-cart.php:1701
 msgid "There are no products in the cart!"
 msgstr ""
 
 #. translators: product
-#: wpc-fly-cart.php:1666
+#: wpc-fly-cart.php:1690
 #, php-format
 msgid "Remove %s from cart"
 msgstr ""
 
 #. translators: %s location.
-#: wpc-fly-cart.php:1759
+#: wpc-fly-cart.php:1783
 #, php-format
 msgid "(estimated for %s)"
 msgstr ""
 
-#: wpc-fly-cart.php:2020
+#: wpc-fly-cart.php:2049
 msgid "Before cart"
 msgstr ""
 
-#: wpc-fly-cart.php:2021
+#: wpc-fly-cart.php:2050
 msgid "After cart"
 msgstr ""
 
-#: wpc-fly-cart.php:2022
+#: wpc-fly-cart.php:2051
 msgid "Before cart items"
 msgstr ""
 
-#: wpc-fly-cart.php:2023
+#: wpc-fly-cart.php:2052
 msgid "After cart items"
 msgstr ""
 
-#: wpc-fly-cart.php:2024
+#: wpc-fly-cart.php:2053
 msgid "Before cart item"
 msgstr ""
 
-#: wpc-fly-cart.php:2025
+#: wpc-fly-cart.php:2054
 msgid "After cart item"
 msgstr ""
 
-#: wpc-fly-cart.php:2026
+#: wpc-fly-cart.php:2055
 msgid "Before cart item info"
 msgstr ""
 
-#: wpc-fly-cart.php:2027
+#: wpc-fly-cart.php:2056
 msgid "After cart item info"
 msgstr ""
 
-#: wpc-fly-cart.php:2028
+#: wpc-fly-cart.php:2057
 msgid "Before cart item name"
 msgstr ""
 
-#: wpc-fly-cart.php:2029
+#: wpc-fly-cart.php:2058
 msgid "After cart item name"
 msgstr ""
 
-#: wpc-fly-cart.php:2030
+#: wpc-fly-cart.php:2059
 msgid "Before suggested products"
 msgstr ""
 
-#: wpc-fly-cart.php:2031
+#: wpc-fly-cart.php:2060
 msgid "After suggested products"
 msgstr ""
 
-#: wpc-fly-cart.php:2032
+#: wpc-fly-cart.php:2061
 msgid "Before buttons"
 msgstr ""
 
-#: wpc-fly-cart.php:2033
+#: wpc-fly-cart.php:2062
 msgid "After buttons"
 msgstr ""

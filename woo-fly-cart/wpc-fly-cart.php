@@ -3,7 +3,7 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 5.9.9
+Version: 6.0.0
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
@@ -12,14 +12,14 @@ Requires Plugins: woocommerce
 Requires at least: 4.0
 Tested up to: 6.9
 WC requires at least: 3.0
-WC tested up to: 10.3
+WC tested up to: 10.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '5.9.9' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '6.0.0' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -171,6 +171,11 @@ if ( ! function_exists( 'woofc_init' ) ) {
                         wp_enqueue_script( 'slick', WOOFC_URI . 'assets/slick/slick.min.js', [ 'jquery' ], WOOFC_VERSION, true );
                     }
 
+                    // canvas-confetti
+                    if ( apply_filters( 'woofc_confetti', self::get_setting( 'confetti', 'no' ) ) === 'yes' ) {
+                        wp_enqueue_script( 'canvas-confetti', WOOFC_URI . 'assets/canvas-confetti/confetti.browser.min.js', [ 'jquery' ], WOOFC_VERSION, true );
+                    }
+
                     // main
                     if ( ! apply_filters( 'woofc_disable_font_icon', false ) ) {
                         wp_enqueue_style( 'woofc-fonts', WOOFC_URI . 'assets/css/fonts.css' );
@@ -247,6 +252,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                     'scrollbar'               => self::get_setting( 'perfect_scrollbar', 'yes' ),
                                     'auto_show'               => self::get_setting( 'auto_show_ajax', 'yes' ),
                                     'auto_show_normal'        => self::get_setting( 'auto_show_normal', 'yes' ),
+                                    'confetti'                => self::get_setting( 'confetti', 'no' ) === 'yes',
                                     'show_cart'               => esc_attr( $show_cart ),
                                     'show_checkout'           => esc_attr( $show_checkout ),
                                     'delay'                   => (int) apply_filters( 'woofc_delay', 300 ),
@@ -272,6 +278,13 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                             'autoplay'       => false,
                                             'autoplaySpeed'  => 3000,
                                             'rtl'            => is_rtl()
+                                    ] ) ) ),
+                                    'confetti_params'         => apply_filters( 'woofc_confetti_params', json_encode( apply_filters( 'woofc_confetti_params_arr', [
+                                            'particleCount' => 100,
+                                            'spread'        => 70,
+                                            'origin'        => [
+                                                    'y' => 0.6
+                                            ]
                                     ] ) ) ),
                                     'is_cart'                 => is_cart(),
                                     'is_checkout'             => is_checkout(),
@@ -413,6 +426,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                 $default_style           = apply_filters( 'woofc_default_style', '01' );
                                 $auto_show_ajax          = self::get_setting( 'auto_show_ajax', 'yes' );
                                 $auto_show_normal        = self::get_setting( 'auto_show_normal', 'yes' );
+                                $confetti                = self::get_setting( 'confetti', 'no' );
                                 $reverse_items           = self::get_setting( 'reverse_items', 'yes' );
                                 $overlay_layer           = self::get_setting( 'overlay_layer', 'yes' );
                                 $perfect_scrollbar       = self::get_setting( 'perfect_scrollbar', 'yes' );
@@ -480,6 +494,16 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                                         <option value="no" <?php selected( $auto_show_normal, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
                                                     </select> </label>
                                                 <span class="description"><?php esc_html_e( 'The fly cart will be opened immediately after whenever click to normal Add to cart buttons (AJAX is not enable) or Add to cart button in single product page?', 'woo-fly-cart' ); ?></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><?php esc_html_e( 'Confetti effect', 'woo-fly-cart' ); ?></th>
+                                            <td>
+                                                <label> <select name="woofc_settings[confetti]">
+                                                        <option value="yes" <?php selected( $confetti, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
+                                                        <option value="no" <?php selected( $confetti, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
+                                                    </select> </label>
+                                                <span class="description"><?php esc_html_e( 'Add a confetti effect each time a product is added to the shopping cart.', 'woo-fly-cart' ); ?></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1839,6 +1863,10 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     do_action( 'woofc_below_area' );
                     echo apply_filters( 'woofc_below_area_content', '' );
 
+                    if ( self::get_setting( 'confetti', 'no' ) === 'yes' ) {
+                        echo '<canvas id="woofc-canvas" class="woofc-canvas"></canvas>';
+                    }
+
                     echo '</div>';
 
                     $product = $global_product;
@@ -1972,6 +2000,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     $area_class = apply_filters( 'woofc_area_class', 'woofc-area woofc-position-' . esc_attr( self::get_setting( 'position', '05' ) ) . ' woofc-effect-' . esc_attr( self::get_setting( 'position', '05' ) ) . ' woofc-slide-' . esc_attr( self::get_setting( 'effect', 'yes' ) ) . ' woofc-rounded-' . esc_attr( self::get_setting( 'rounded', 'no' ) ) . ' woofc-style-' . esc_attr( self::get_setting( 'style', '01' ) ) );
 
                     echo '<div id="woofc-area" class="' . esc_attr( $area_class ) . '">';
+
                     echo self::get_cart_area();
 
                     echo '</div>';
