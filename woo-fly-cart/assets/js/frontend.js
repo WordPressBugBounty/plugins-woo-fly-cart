@@ -518,5 +518,9 @@ function woofc_confetti(id = 'woofc-canvas') {
 
     canvas.confetti = canvas.confetti || confetti.create(canvas, {resize: true});
 
-    canvas.confetti(woofc_vars.confetti_params);
+    if (woofc_vars.confetti_params !== undefined) {
+        canvas.confetti(woofc_vars.confetti_params);
+    } else {
+        canvas.confetti();
+    }
 }
