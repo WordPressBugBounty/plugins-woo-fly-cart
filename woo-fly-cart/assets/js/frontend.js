@@ -39,9 +39,31 @@
 
     // Auto show
     $(document.body).on('added_to_cart', function (e, fragments, cart_hash, $button) {
+        if ($('.woofc-checkout-form').length && !$('.woofc-checkout-form .woocommerce-checkout').length) {
+            var data = {
+                action: 'woofc_get_checkout_form', nonce: woofc_nonce(),
+            };
+
+            $.post(woofc_vars.wc_ajax_url.toString().replace('%%endpoint%%', 'woofc_get_checkout_form'), data, function (response) {
+                $('.woofc-checkout-form').html(response);
+
+                if (woofc_vars.wc_checkout_js !== '') {
+                    $.getScript(woofc_vars.wc_checkout_js);
+                }
+            });
+        }
+
+        if ($('.woofc-checkout-area').length && (woofc_vars.instant_checkout === 'yes')) {
+            $(document.body).trigger('update_checkout', {update_shipping_method: false});
+        }
+
         if (woofc_vars.auto_show === 'yes') {
             setTimeout(function () {
-                woofc_show_cart();
+                if (woofc_vars.instant_checkout === 'yes' && woofc_vars.instant_checkout_open === 'yes') {
+                    woofc_show_cart('checkout');
+                } else {
+                    woofc_show_cart();
+                }
 
                 if (woofc_vars.confetti) {
                     woofc_confetti();
@@ -250,6 +272,11 @@
     });
 
     $(document).on('updated_checkout', function (e) {
+        if ($('body').hasClass('woofc-show-checkout')) {
+            $('.woofc-cart-area').addClass('woofc-hide');
+            $('.woofc-checkout-area').removeClass('woofc-hide');
+        }
+
         woofc_slick();
         woofc_perfect_scrollbar();
     });
@@ -269,6 +296,33 @@
 
         $('body').attr('woofc-undo-key', '');
         $('body').attr('woofc-undo-name', '');
+    });
+
+    // Premium - Checkout
+    $(document).on('click touch', '.woofc-back', function (e) {
+        e.preventDefault();
+
+        $('.woofc-checkout-area').addClass('woofc-hide');
+        $('body').removeClass('woofc-show-checkout');
+        $('.woofc-cart-area').removeClass('woofc-hide');
+
+        woofc_slick();
+    });
+
+    $(document).on('click touch', '.woofc-action-checkout', function (e) {
+        if ((woofc_vars.instant_checkout === 'yes') && $('.woofc-checkout-area').length) {
+            e.preventDefault();
+
+            $(document.body).trigger('update_checkout', {update_shipping_method: false});
+
+            woofc_show_checkout();
+        }
+    });
+
+    $(document).on('click touch', '.woofc-area #place_order', function (e) {
+        setTimeout(function () {
+            $('.woofc-area-mid').scrollTop($('.woofc-area-mid').scrollTop() + $('.woofc-checkout-form').position().top);
+        }, 1000);
     });
 })(jQuery);
 
@@ -414,6 +468,10 @@ function woofc_slick() {
 function woofc_show_cart(view = 'cart') {
     jQuery('body').addClass('woofc-show');
 
+    if (view === 'checkout') {
+        woofc_show_checkout();
+    }
+
     jQuery(document.body).trigger('woofc_show_cart');
 }
 
@@ -431,6 +489,14 @@ function woofc_toggle_cart() {
     }
 
     jQuery(document.body).trigger('woofc_toggle_cart');
+}
+
+function woofc_show_checkout() {
+    jQuery('.woofc-cart-area').addClass('woofc-hide');
+    jQuery('body').addClass('woofc-show-checkout');
+    jQuery('.woofc-checkout-area').removeClass('woofc-hide');
+
+    jQuery(document.body).trigger('woofc_show_checkout');
 }
 
 function woofc_check_qty($qty) {
@@ -481,18 +547,7 @@ function woofc_check_qty($qty) {
     }
 }
 
-function woofc_decimal_places(num) {
-    var match = ('' + num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
 
-    if (!match) {
-        return 0;
-    }
-
-    return Math.max(0, // Number of digits right of decimal point.
-        (match[1] ? match[1].length : 0)
-        // Adjust for scientific notation.
-        - (match[2] ? +match[2] : 0));
-}
 
 function woofc_nonce() {
     let nonce = jQuery('.woofc-cart-area').attr('data-nonce');
