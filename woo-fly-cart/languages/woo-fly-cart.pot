@@ -1,15 +1,15 @@
 # Copyright (C) 2026 WPClever
-# This file is distributed under the same license as the WPC Fly Cart for WooCommerce plugin.
+# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPC Fly Cart for WooCommerce 6.1.0\n"
+"Project-Id-Version: WPC Fly Cart for WooCommerce 6.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-fly-cart\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-20T09:15:45+00:00\n"
+"POT-Creation-Date: 2026-04-21T13:37:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-fly-cart\n"
@@ -365,7 +365,7 @@ msgstr ""
 #: includes/class-backend.php:465
 #: includes/class-backend.php:996
 #: includes/class-backend.php:1002
-#: wpc-fly-cart.php:618
+#: wpc-fly-cart.php:620
 msgid "Subtotal"
 msgstr ""
 
@@ -432,7 +432,7 @@ msgstr ""
 #: includes/class-backend.php:534
 #: includes/class-backend.php:1040
 #: includes/class-backend.php:1046
-#: wpc-fly-cart.php:656
+#: wpc-fly-cart.php:658
 msgid "Total"
 msgstr ""
 
@@ -532,7 +532,7 @@ msgstr ""
 #: includes/class-backend.php:671
 #: includes/class-backend.php:963
 #: includes/class-backend.php:969
-#: wpc-fly-cart.php:606
+#: wpc-fly-cart.php:608
 msgid "Empty cart"
 msgstr ""
 
@@ -552,14 +552,14 @@ msgstr ""
 #: includes/class-backend.php:691
 #: includes/class-backend.php:985
 #: includes/class-backend.php:991
-#: wpc-fly-cart.php:610
+#: wpc-fly-cart.php:612
 msgid "Share cart"
 msgstr ""
 
 #: includes/class-backend.php:702
 #: includes/class-backend.php:1073
 #: includes/class-backend.php:1079
-#: wpc-fly-cart.php:704
+#: wpc-fly-cart.php:706
 msgid "Continue shopping"
 msgstr ""
 
@@ -697,31 +697,31 @@ msgid "Cart heading"
 msgstr ""
 
 #: includes/class-backend.php:902
-#: wpc-fly-cart.php:393
+#: wpc-fly-cart.php:395
 msgid "Shopping cart"
 msgstr ""
 
 #: includes/class-backend.php:907
 #: includes/class-backend.php:913
-#: wpc-fly-cart.php:396
-#: wpc-fly-cart.php:784
+#: wpc-fly-cart.php:398
+#: wpc-fly-cart.php:786
 msgid "Close"
 msgstr ""
 
 #. translators: product
 #: includes/class-backend.php:918
 #: includes/class-backend.php:924
-#: wpc-fly-cart.php:539
+#: wpc-fly-cart.php:541
 msgid "Remove"
 msgstr ""
 
 #: includes/class-backend.php:935
-#: wpc-fly-cart.php:244
+#: wpc-fly-cart.php:246
 msgid "Do you want to remove this item?"
 msgstr ""
 
 #: includes/class-backend.php:946
-#: wpc-fly-cart.php:245
+#: wpc-fly-cart.php:247
 msgid "Undo?"
 msgstr ""
 
@@ -731,13 +731,13 @@ msgstr ""
 
 #. translators: product
 #: includes/class-backend.php:958
-#: wpc-fly-cart.php:246
+#: wpc-fly-cart.php:248
 #, php-format
 msgid "%s was removed."
 msgstr ""
 
 #: includes/class-backend.php:980
-#: wpc-fly-cart.php:243
+#: wpc-fly-cart.php:245
 msgid "Do you want to empty the cart?"
 msgstr ""
 
@@ -761,22 +761,22 @@ msgstr ""
 
 #: includes/class-backend.php:1051
 #: includes/class-backend.php:1057
-#: wpc-fly-cart.php:664
-#: wpc-fly-cart.php:668
-#: wpc-fly-cart.php:780
+#: wpc-fly-cart.php:666
+#: wpc-fly-cart.php:670
+#: wpc-fly-cart.php:782
 msgid "Cart"
 msgstr ""
 
 #: includes/class-backend.php:1062
 #: includes/class-backend.php:1068
-#: wpc-fly-cart.php:664
-#: wpc-fly-cart.php:673
-#: wpc-fly-cart.php:781
+#: wpc-fly-cart.php:666
+#: wpc-fly-cart.php:675
+#: wpc-fly-cart.php:783
 msgid "Checkout"
 msgstr ""
 
 #: includes/class-backend.php:1090
-#: wpc-fly-cart.php:730
+#: wpc-fly-cart.php:732
 msgid "You may be interested in&hellip;"
 msgstr ""
 
@@ -785,74 +785,74 @@ msgid "There are no products"
 msgstr ""
 
 #: includes/class-backend.php:1101
-#: wpc-fly-cart.php:550
+#: wpc-fly-cart.php:552
 msgid "There are no products in the cart!"
 msgstr ""
 
 #. translators: product
-#: wpc-fly-cart.php:539
+#: wpc-fly-cart.php:541
 #, php-format
 msgid "Remove %s from cart"
 msgstr ""
 
 #. translators: %s location.
-#: wpc-fly-cart.php:632
+#: wpc-fly-cart.php:634
 #, php-format
 msgid "(estimated for %s)"
 msgstr ""
 
-#: wpc-fly-cart.php:912
+#: wpc-fly-cart.php:914
 msgid "Before cart"
 msgstr ""
 
-#: wpc-fly-cart.php:913
+#: wpc-fly-cart.php:915
 msgid "After cart"
 msgstr ""
 
-#: wpc-fly-cart.php:914
+#: wpc-fly-cart.php:916
 msgid "Before cart items"
 msgstr ""
 
-#: wpc-fly-cart.php:915
+#: wpc-fly-cart.php:917
 msgid "After cart items"
 msgstr ""
 
-#: wpc-fly-cart.php:916
+#: wpc-fly-cart.php:918
 msgid "Before cart item"
 msgstr ""
 
-#: wpc-fly-cart.php:917
+#: wpc-fly-cart.php:919
 msgid "After cart item"
 msgstr ""
 
-#: wpc-fly-cart.php:918
+#: wpc-fly-cart.php:920
 msgid "Before cart item info"
 msgstr ""
 
-#: wpc-fly-cart.php:919
+#: wpc-fly-cart.php:921
 msgid "After cart item info"
 msgstr ""
 
-#: wpc-fly-cart.php:920
+#: wpc-fly-cart.php:922
 msgid "Before cart item name"
 msgstr ""
 
-#: wpc-fly-cart.php:921
+#: wpc-fly-cart.php:923
 msgid "After cart item name"
 msgstr ""
 
-#: wpc-fly-cart.php:922
+#: wpc-fly-cart.php:924
 msgid "Before suggested products"
 msgstr ""
 
-#: wpc-fly-cart.php:923
+#: wpc-fly-cart.php:925
 msgid "After suggested products"
 msgstr ""
 
-#: wpc-fly-cart.php:924
+#: wpc-fly-cart.php:926
 msgid "Before buttons"
 msgstr ""
 
-#: wpc-fly-cart.php:925
+#: wpc-fly-cart.php:927
 msgid "After buttons"
 msgstr ""
