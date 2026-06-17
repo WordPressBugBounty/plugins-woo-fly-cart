@@ -14,8 +14,7 @@ if ( ! class_exists( 'Walker_PageDropdown_Multiple' ) ) {
             }
 
             $output .= '>';
-            $title  = apply_filters( 'list_pages', $page->post_title, $page );
-            $output .= $pad . ' ' . esc_html( $title );
+            $output .= $pad . ' ' . esc_html( $page->post_title );
             $output .= "</option>\n";
         }
     }
@@ -56,13 +55,13 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
             wp_enqueue_media();
             wp_enqueue_style( 'wp-color-picker' );
             wp_enqueue_style( 'woofc-backend', WOOFC_URI . 'assets/css/backend.css', [], WOOFC_VERSION );
-            wp_enqueue_style( 'fonticonpicker', WOOFC_URI . 'assets/fonticonpicker/css/jquery.fonticonpicker.css' );
-            wp_enqueue_script( 'fonticonpicker', WOOFC_URI . 'assets/fonticonpicker/js/jquery.fonticonpicker.min.js', [ 'jquery' ] );
-            wp_enqueue_style( 'woofc-fonts', WOOFC_URI . 'assets/css/fonts.css' );
+            wp_enqueue_style( 'fonticonpicker', WOOFC_URI . 'assets/fonticonpicker/css/jquery.fonticonpicker.css', [], WOOFC_VERSION );
+            wp_enqueue_script( 'fonticonpicker', WOOFC_URI . 'assets/fonticonpicker/js/jquery.fonticonpicker.min.js', [ 'jquery' ], WOOFC_VERSION, true );
+            wp_enqueue_style( 'woofc-fonts', WOOFC_URI . 'assets/css/fonts.css', [], WOOFC_VERSION );
             wp_enqueue_script( 'woofc-backend', WOOFC_URI . 'assets/js/backend.js', [
                     'jquery',
                     'wp-color-picker'
-            ] );
+            ], WOOFC_VERSION, true );
         }
 
         function action_links( $links, $file ) {
@@ -130,7 +129,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
         }
 
         function admin_menu_content() {
-            $active_tab = sanitize_key( $_GET['tab'] ?? 'settings' );
+            $active_tab = sanitize_key( $_GET['tab'] ?? 'settings' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- tab navigation, no data modification
             ?>
             <div class="wpclever_settings_page wrap">
                 <div class="wpclever_settings_page_header">
@@ -153,7 +152,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                     </div>
                 </div>
                 <h2></h2>
-                <?php if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) { ?>
+                <?php if ( isset( $_GET['settings-updated'] ) && sanitize_text_field( wp_unslash( $_GET['settings-updated'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core param added after options.php save ?>
                     <div class="notice notice-success is-dismissible">
                         <p><?php esc_html_e( 'Settings updated.', 'woo-fly-cart' ); ?></p>
                     </div>
@@ -343,7 +342,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                         <label for="woofc_color"></label><input type="text"
                                                                                 name="woofc_settings[color]"
                                                                                 id="woofc_color"
-                                                                                value="<?php echo WPCleverWoofc::get_setting( 'color', '#cc6055' ); ?>"
+                                                                                value="<?php echo esc_attr( WPCleverWoofc::get_setting( 'color', '#cc6055' ) ); ?>"
                                                                                 class="woofc_color_picker"/>
                                         <span class="description"><?php printf( /* translators: color */ esc_html__( 'Background or text color of selected style, default %s', 'woo-fly-cart' ), '<code>#cc6055</code>' ); ?></span>
                                     </td>
@@ -353,14 +352,14 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                     <td>
                                         <div class="woofc_image_preview" id="woofc_image_preview">
                                             <?php if ( WPCleverWoofc::get_setting( 'bg_image', '' ) !== '' ) {
-                                                echo '<img src="' . wp_get_attachment_url( WPCleverWoofc::get_setting( 'bg_image', '' ) ) . '"/>';
+                                                echo '<img src="' . esc_url( wp_get_attachment_url( WPCleverWoofc::get_setting( 'bg_image', '' ) ) ) . '"/>';
                                             } ?>
                                         </div>
                                         <input id="woofc_upload_image_button" type="button" class="button"
                                                value="<?php esc_html_e( 'Upload image', 'woo-fly-cart' ); ?>"/>
                                         <input type="hidden" name="woofc_settings[bg_image]"
                                                id="woofc_image_attachment_url"
-                                               value="<?php echo WPCleverWoofc::get_setting( 'bg_image', '' ); ?>"/>
+                                               value="<?php echo esc_attr( WPCleverWoofc::get_setting( 'bg_image', '' ) ); ?>"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -714,7 +713,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                         <label>
                                             <input type="url" class="regular-text code"
                                                    name="woofc_settings[continue_url]"
-                                                   value="<?php echo WPCleverWoofc::get_setting( 'continue_url', '' ); ?>"/>
+                                                   value="<?php echo esc_url( WPCleverWoofc::get_setting( 'continue_url', '' ) ); ?>"/>
                                         </label>
                                         <span class="description"><?php esc_html_e( 'Custom URL for "continue shopping" button. By default, only close the fly cart when clicking on this button.', 'woo-fly-cart' ); ?></span>
                                     </td>
@@ -765,7 +764,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                                 'walker'   => new Walker_PageDropdown_Multiple(),
                                                 'selected' => $hide_pages
                                         ];
-                                        echo str_replace( '<select', '<select multiple="multiple"', wp_dropdown_pages( $args ) );
+                                        echo wp_kses_post( str_replace( '<select', '<select multiple="multiple"', wp_dropdown_pages( $args ) ) );
                                         ?>
                                         <p class="description"><?php esc_html_e( 'Hide the fly cart on these pages.', 'woo-fly-cart' ); ?></p>
                                     </td>
@@ -802,9 +801,9 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                             <?php
                                             for ( $i = 1; $i <= 16; $i ++ ) {
                                                 if ( WPCleverWoofc::get_setting( 'count_icon', 'woofc-icon-cart7' ) === 'woofc-icon-cart' . $i ) {
-                                                    echo '<option value="woofc-icon-cart' . $i . '" selected>woofc-icon-cart' . $i . '</option>';
+                                                    echo '<option value="woofc-icon-cart' . absint( $i ) . '" selected>woofc-icon-cart' . absint( $i ) . '</option>';
                                                 } else {
-                                                    echo '<option value="woofc-icon-cart' . $i . '">woofc-icon-cart' . $i . '</option>';
+                                                    echo '<option value="woofc-icon-cart' . absint( $i ) . '">woofc-icon-cart' . absint( $i ) . '</option>';
                                                 }
                                             }
                                             ?>
@@ -857,7 +856,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                         <label>
                                             <input type="text" class="regular-text"
                                                    name="woofc_settings[manual_show]"
-                                                   value="<?php echo WPCleverWoofc::get_setting( 'manual_show', '' ); ?>"
+                                                   value="<?php echo esc_attr( WPCleverWoofc::get_setting( 'manual_show', '' ) ); ?>"
                                                    placeholder="<?php esc_attr_e( 'button class or id', 'woo-fly-cart' ); ?>"/>
                                         </label>
                                         <span class="description"><?php printf( /* translators: selector */ esc_html__( 'The class or id of the custom menu. When clicking on it, the fly cart will show up. Example %1$s or %2$s', 'woo-fly-cart' ), '<code>.fly-cart-btn</code>', '<code>#fly-cart-btn</code>' ); ?></span>

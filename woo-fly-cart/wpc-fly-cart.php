@@ -3,23 +3,23 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 6.2.0
+Version: 6.2.1
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
 Domain Path: /languages/
 Requires Plugins: woocommerce
-Requires at least: 4.0
-Tested up to: 6.9
+Requires at least: 5.9
+Tested up to: 7.0
 WC requires at least: 3.0
-WC tested up to: 10.7
+WC tested up to: 10.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '6.2.0' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '6.2.1' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -67,7 +67,6 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     self::$settings     = (array) get_option( 'woofc_settings', [] );
                     self::$localization = (array) get_option( 'woofc_localization', [] );
 
-                    add_action( 'init', [ $this, 'init' ] );
                     add_action( 'wp_footer', [ $this, 'footer' ] );
                     add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
                     add_filter( 'wp_nav_menu_items', [ $this, 'nav_menu_items' ], 99, 2 );
@@ -97,12 +96,6 @@ if ( ! function_exists( 'woofc_init' ) ) {
                         WPCleverWoofc_Backend::instance();
                     }
                 }
-
-                function init() {
-                    // load text-domain
-                    load_plugin_textdomain( 'woo-fly-cart', false, basename( WOOFC_DIR ) . '/languages/' );
-                }
-
                 public static function get_settings() {
                     return apply_filters( 'woofc_get_settings', self::$settings );
                 }
@@ -139,18 +132,18 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     }
 
                     // hint css
-                    wp_enqueue_style( 'hint', WOOFC_URI . 'assets/hint/hint.min.css' );
+                    wp_enqueue_style( 'hint', WOOFC_URI . 'assets/hint/hint.min.css', [], WOOFC_VERSION );
 
                     // perfect scrollbar
                     if ( apply_filters( 'woofc_perfect_scrollbar', self::get_setting( 'perfect_scrollbar', 'yes' ) ) === 'yes' ) {
-                        wp_enqueue_style( 'perfect-scrollbar', WOOFC_URI . 'assets/perfect-scrollbar/css/perfect-scrollbar.min.css' );
-                        wp_enqueue_style( 'perfect-scrollbar-wpc', WOOFC_URI . 'assets/perfect-scrollbar/css/custom-theme.css' );
+                        wp_enqueue_style( 'perfect-scrollbar', WOOFC_URI . 'assets/perfect-scrollbar/css/perfect-scrollbar.min.css', [], WOOFC_VERSION );
+                        wp_enqueue_style( 'perfect-scrollbar-wpc', WOOFC_URI . 'assets/perfect-scrollbar/css/custom-theme.css', [], WOOFC_VERSION );
                         wp_enqueue_script( 'perfect-scrollbar', WOOFC_URI . 'assets/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js', [ 'jquery' ], WOOFC_VERSION, true );
                     }
 
                     // slick
                     if ( ( ( apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ), 'suggested' ) === 'yes' ) && ! empty( self::get_setting( 'suggested', [] ) ) ) || ( ( self::get_setting( 'upsell_funnel', 'yes' ) === 'yes' ) && class_exists( 'Wpcuf' ) && ( self::get_setting( 'upsell_funnel_carousel', 'yes' ) === 'yes' ) ) ) {
-                        wp_enqueue_style( 'slick', WOOFC_URI . 'assets/slick/slick.css' );
+                        wp_enqueue_style( 'slick', WOOFC_URI . 'assets/slick/slick.css', [], WOOFC_VERSION );
                         wp_enqueue_script( 'slick', WOOFC_URI . 'assets/slick/slick.min.js', [ 'jquery' ], WOOFC_VERSION, true );
                     }
 
@@ -161,7 +154,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                     // main
                     if ( ! apply_filters( 'woofc_disable_font_icon', false ) ) {
-                        wp_enqueue_style( 'woofc-fonts', WOOFC_URI . 'assets/css/fonts.css' );
+                        wp_enqueue_style( 'woofc-fonts', WOOFC_URI . 'assets/css/fonts.css', [], WOOFC_VERSION );
                     }
 
                     // css
@@ -205,7 +198,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                     if ( is_array( $requests ) && ! empty( $requests ) ) {
                         foreach ( $requests as $request ) {
-                            if ( isset( $_REQUEST[ $request ] ) ) {
+                            if ( isset( $_REQUEST[ $request ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only, no data processing
                                 $show_cart = 'yes';
                                 break;
                             }
@@ -217,7 +210,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                     if ( is_array( $checkout_requests ) && ! empty( $checkout_requests ) ) {
                         foreach ( $checkout_requests as $checkout_request ) {
-                            if ( isset( $_REQUEST[ $checkout_request ] ) ) {
+                            if ( isset( $_REQUEST[ $checkout_request ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only, no data processing
                                 $show_checkout = 'yes';
                                 break;
                             }
@@ -271,7 +264,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                     ] ) ) ),
                                     'is_cart'                 => is_cart(),
                                     'is_checkout'             => is_checkout(),
-                                    'cart_url'                => self::disable() ? wc_get_cart_url() : '',
+                                    'cart_url'                => self::disable() ? esc_url( wc_get_cart_url() ) : '',
                                     'hide_count_empty'        => self::get_setting( 'count_hide_empty', 'no' ),
                                     'wc_checkout_js'          => defined( 'WC_PLUGIN_FILE' ) ? plugins_url( 'assets/js/frontend/checkout.js', WC_PLUGIN_FILE ) : '',
                             ] )
@@ -286,17 +279,17 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     }
 
                     if ( isset( $_POST['cart_item_qty'] ) && ! empty( $_POST['cart_item_key'] ) ) {
-                        if ( $cart_item = WC()->cart->get_cart_item( sanitize_text_field( $_POST['cart_item_key'] ) ) ) {
-                            $qty = (float) sanitize_text_field( $_POST['cart_item_qty'] );
+                        if ( $cart_item = WC()->cart->get_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ) ) ) {
+                            $qty = (float) sanitize_text_field( wp_unslash( $_POST['cart_item_qty'] ) );
 
                             if ( ( $max_purchase = $cart_item['data']->get_max_purchase_quantity() ) && ( $max_purchase > 0 ) && ( $qty > $max_purchase ) ) {
                                 $qty = $max_purchase;
                             }
 
                             if ( $qty > 0 ) {
-                                WC()->cart->set_quantity( sanitize_text_field( $_POST['cart_item_key'] ), $qty );
+                                WC()->cart->set_quantity( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ), $qty );
                             } else {
-                                WC()->cart->remove_cart_item( sanitize_text_field( $_POST['cart_item_key'] ) );
+                                WC()->cart->remove_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ) );
                             }
                         }
 
@@ -314,7 +307,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     }
 
                     if ( isset( $_POST['cart_item_key'] ) ) {
-                        WC()->cart->remove_cart_item( sanitize_text_field( $_POST['cart_item_key'] ) );
+                        WC()->cart->remove_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ) );
                         WC_AJAX::get_refreshed_fragments();
                     }
 
@@ -329,7 +322,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     }
 
                     if ( isset( $_POST['item_key'] ) ) {
-                        if ( WC()->cart->restore_cart_item( sanitize_text_field( $_POST['item_key'] ) ) ) {
+                        if ( WC()->cart->restore_cart_item( sanitize_text_field( wp_unslash( $_POST['item_key'] ) ) ) ) {
                             echo 'true';
                         } else {
                             echo 'false';
@@ -377,7 +370,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                             $cookie = 'woosc_products_' . md5( 'woosc' . get_current_user_id() );
 
                             if ( ! empty( $_COOKIE[ $cookie ] ) ) {
-                                $compare_products   = explode( ',', sanitize_text_field( $_COOKIE[ $cookie ] ) );
+                                $compare_products   = explode( ',', sanitize_text_field( wp_unslash( $_COOKIE[ $cookie ] ) ) );
                                 $suggested_products = array_merge( $suggested_products, $compare_products );
                             }
                         }
@@ -392,9 +385,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     echo '<div class="woofc-inner woofc-cart-area" data-nonce="' . esc_attr( wp_create_nonce( 'woofc-security' ) ) . '">';
 
                     do_action( 'woofc_above_area' );
-                    echo apply_filters( 'woofc_above_area_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_above_area_content', '' ) );
 
-                    echo '<div class="woofc-area-top"><span class="woofc-area-heading">' . self::localization( 'heading', esc_html__( 'Shopping cart', 'woo-fly-cart' ) ) . '<span class="woofc-area-count">' . WC()->cart->get_cart_contents_count() . '</span></span>';
+                    echo '<div class="woofc-area-top"><span class="woofc-area-heading">' . esc_html( self::localization( 'heading', esc_html__( 'Shopping cart', 'woo-fly-cart' ) ) ) . '<span class="woofc-area-count">' . absint( WC()->cart->get_cart_contents_count() ) . '</span></span>';
 
                     if ( self::get_setting( 'close', 'yes' ) === 'yes' ) {
                         echo '<div class="woofc-close hint--left" aria-label="' . esc_attr( self::localization( 'close', esc_html__( 'Close', 'woo-fly-cart' ) ) ) . '"><i class="woofc-icon-icon10"></i></div>';
@@ -404,14 +397,14 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     echo '<div class="woofc-area-mid woofc-items">';
 
                     do_action( 'woofc_above_items' );
-                    echo apply_filters( 'woofc_above_items_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_above_items_content', '' ) );
 
                     // notices
                     if ( apply_filters( 'woofc_show_notices', true ) ) {
                         $notices = wc_print_notices( true );
 
                         if ( ! empty( $notices ) ) {
-                            echo '<div class="woofc-notices">' . $notices . '</div>';
+                            echo '<div class="woofc-notices">' . wp_kses_post( $notices ) . '</div>';
                         }
                     }
 
@@ -449,7 +442,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                 echo '<div class="' . esc_attr( apply_filters( 'woocommerce_cart_item_class', $item_class, $cart_item, $cart_item_key ) ) . '" data-key="' . esc_attr( $cart_item_key ) . '" data-name="' . esc_attr( $product->get_name() ) . '">';
 
                                 do_action( 'woofc_above_item', $cart_item );
-                                echo apply_filters( 'woofc_above_item_inner', '', $cart_item );
+                                echo wp_kses_post( apply_filters( 'woofc_above_item_inner', '', $cart_item ) );
 
                                 echo '<div class="woofc-item-inner">';
                                 echo '<div class="woofc-item-thumb">';
@@ -460,7 +453,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                     $cart_item_thumbnail = $product->get_image();
                                 }
 
-                                echo apply_filters( 'woocommerce_cart_item_thumbnail', $cart_item_thumbnail, $cart_item, $cart_item_key );
+                                echo wp_kses_post( apply_filters( 'woocommerce_cart_item_thumbnail', $cart_item_thumbnail, $cart_item, $cart_item_key ) );
                                 echo '</div><!-- /.woofc-item-thumb -->';
 
                                 echo '<div class="woofc-item-info">';
@@ -477,23 +470,23 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                     $cart_item_name = $product->get_name();
                                 }
 
-                                echo apply_filters( 'woocommerce_cart_item_name', $cart_item_name, $cart_item, $cart_item_key );
+                                echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', $cart_item_name, $cart_item, $cart_item_key ) );
                                 echo '</span><!-- /.woofc-item-title -->';
 
                                 do_action( 'woofc_below_item_name', $product, $cart_item );
 
                                 if ( self::get_setting( 'data', 'no' ) === 'yes' ) {
-                                    echo apply_filters( 'woofc_cart_item_data', '<span class="woofc-item-data">' . wc_get_formatted_cart_item_data( $cart_item, apply_filters( 'woofc_cart_item_data_flat', true ) ) . '</span>', $cart_item );
+                                    echo wp_kses_post( apply_filters( 'woofc_cart_item_data', '<span class="woofc-item-data">' . wc_get_formatted_cart_item_data( $cart_item, apply_filters( 'woofc_cart_item_data_flat', true ) ) . '</span>', $cart_item ) );
                                 }
 
                                 if ( self::get_setting( 'price', 'price' ) === 'price' ) {
-                                    echo '<span class="woofc-item-price">' . apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $product ), $cart_item, $cart_item_key ) . '</span>';
+                                    echo '<span class="woofc-item-price">' . wp_kses_post( apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $product ), $cart_item, $cart_item_key ) ) . '</span>';
                                 } elseif ( self::get_setting( 'price', 'price' ) === 'subtotal' ) {
-                                    echo '<span class="woofc-item-price">' . apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] ), $cart_item, $cart_item_key ) . '</span>';
+                                    echo '<span class="woofc-item-price">' . wp_kses_post( apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] ), $cart_item, $cart_item_key ) ) . '</span>';
                                 }
 
                                 if ( ( self::get_setting( 'estimated_delivery_date', 'no' ) === 'yes' ) && class_exists( 'WPCleverWpced' ) ) {
-                                    echo apply_filters( 'woofc_cart_item_estimated_delivery_date', '<span class="woofc-item-estimated-delivery-date">' . do_shortcode( '[wpced]' ) . '</span>', $cart_item );
+                                    echo wp_kses_post( apply_filters( 'woofc_cart_item_estimated_delivery_date', '<span class="woofc-item-estimated-delivery-date">' . do_shortcode( '[wpced]' ) . '</span>', $cart_item ) );
                                 }
 
                                 if ( ( self::get_setting( 'save_for_later', 'yes' ) === 'yes' ) && class_exists( 'WPCleverWoosl' ) ) {
@@ -537,15 +530,15 @@ if ( ! function_exists( 'woofc_init' ) ) {
                                     }
                                 }
 
-                                echo '<div class="woofc-item-qty ' . ( $plus_minus ? 'woofc-item-qty-plus-minus' : '' ) . '"><div class="woofc-item-qty-inner">' . apply_filters( 'woocommerce_cart_item_quantity', $cart_item_quantity, $cart_item_key, $cart_item ) . '</div></div><!-- /.woofc-item-qty -->';
+                                echo '<div class="woofc-item-qty ' . ( $plus_minus ? 'woofc-item-qty-plus-minus' : '' ) . '"><div class="woofc-item-qty-inner">' . wp_kses( apply_filters( 'woocommerce_cart_item_quantity', $cart_item_quantity, $cart_item_key, $cart_item ), array_merge( wp_kses_allowed_html( 'post' ), [ 'input' => [ 'type' => true, 'id' => true, 'class' => true, 'name' => true, 'value' => true, 'min' => true, 'max' => true, 'step' => true, 'size' => true, 'pattern' => true, 'inputmode' => true, 'autocomplete' => true, 'data-*' => true, ], 'select' => [ 'id' => true, 'class' => true, 'name' => true, 'data-*' => true, ], 'option' => [ 'value' => true, 'selected' => true, ], ] ) ) . '</div></div><!-- /.woofc-item-qty -->';
 
                                 // always keep .woofc-item-remove to compatible with themes -  can hide it by CSS
-                                echo apply_filters( 'woocommerce_cart_item_remove_link', '<span class="woofc-item-remove" aria-label="' . esc_attr( sprintf( /* translators: product */ esc_html__( 'Remove %s from cart', 'woo-fly-cart' ), wp_strip_all_tags( $product->get_name() ) ) ) . '" data-product_id="' . esc_attr( $product_id ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '"><span class="hint--left" aria-label="' . esc_attr( self::localization( 'remove', esc_html__( 'Remove', 'woo-fly-cart' ) ) ) . '"><i class="woofc-icon-icon10"></i></span></span>', $cart_item_key );
+                                echo wp_kses_post( apply_filters( 'woocommerce_cart_item_remove_link', '<span class="woofc-item-remove" aria-label="' . esc_attr( sprintf( /* translators: product */ esc_html__( 'Remove %s from cart', 'woo-fly-cart' ), wp_strip_all_tags( $product->get_name() ) ) ) . '" data-product_id="' . esc_attr( $product_id ) . '" data-product_sku="' . esc_attr( $product->get_sku() ) . '"><span class="hint--left" aria-label="' . esc_attr( self::localization( 'remove', esc_html__( 'Remove', 'woo-fly-cart' ) ) ) . '"><i class="woofc-icon-icon10"></i></span></span>', $cart_item_key ) );
 
                                 echo '</div><!-- /.woofc-item-inner -->';
 
                                 do_action( 'woofc_below_item', $cart_item );
-                                echo apply_filters( 'woofc_below_item_inner', '', $cart_item );
+                                echo wp_kses_post( apply_filters( 'woofc_below_item_inner', '', $cart_item ) );
 
                                 echo '</div><!-- /.woofc-item -->';
                             }
@@ -592,14 +585,14 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     }
 
                     do_action( 'woofc_below_items' );
-                    echo apply_filters( 'woofc_below_items_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_below_items_content', '' ) );
 
                     echo '</div><!-- woofc-area-mid -->';
 
                     echo '<div class="woofc-area-bot">';
 
                     do_action( 'woofc_above_bottom' );
-                    echo apply_filters( 'woofc_above_bottom_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_above_bottom_content', '' ) );
 
                     if ( ! empty( $items ) ) {
                         if ( self::get_setting( 'empty', 'no' ) === 'yes' || self::get_setting( 'share', 'yes' ) === 'yes' ) {
@@ -607,20 +600,20 @@ if ( ! function_exists( 'woofc_init' ) ) {
                             echo '<div class="woofc-link">';
 
                             if ( self::get_setting( 'empty', 'no' ) === 'yes' ) {
-                                echo '<div class="woofc-empty"><span class="woofc-empty-cart">' . self::localization( 'empty', esc_html__( 'Empty cart', 'woo-fly-cart' ) ) . '</span></div>';
+                                echo '<div class="woofc-empty"><span class="woofc-empty-cart">' . esc_html( self::localization( 'empty', esc_html__( 'Empty cart', 'woo-fly-cart' ) ) ) . '</span></div>';
                             }
 
                             if ( self::get_setting( 'share', 'yes' ) === 'yes' ) {
-                                echo '<div class="woofc-share"><span class="woofc-share-cart wpcss-btn" data-hash="' . esc_attr( WC()->cart->get_cart_hash() ) . '">' . self::localization( 'share', esc_html__( 'Share cart', 'woo-fly-cart' ) ) . '</span></div>';
+                                echo '<div class="woofc-share"><span class="woofc-share-cart wpcss-btn" data-hash="' . esc_attr( WC()->cart->get_cart_hash() ) . '">' . esc_html( self::localization( 'share', esc_html__( 'Share cart', 'woo-fly-cart' ) ) ) . '</span></div>';
                             }
 
                             echo '</div>';
                         }
 
                         if ( self::get_setting( 'subtotal', 'yes' ) === 'yes' ) {
-                            echo apply_filters( 'woofc_above_subtotal_content', '' );
-                            echo '<div class="woofc-subtotal woofc-data"><div class="woofc-data-left">' . self::localization( 'subtotal', esc_html__( 'Subtotal', 'woo-fly-cart' ) ) . '</div><div id="woofc-subtotal" class="woofc-data-right">' . apply_filters( 'woofc_get_subtotal', WC()->cart->get_cart_subtotal() ) . '</div></div>';
-                            echo apply_filters( 'woofc_below_subtotal_content', '' );
+                            echo wp_kses_post( apply_filters( 'woofc_above_subtotal_content', '' ) );
+                            echo '<div class="woofc-subtotal woofc-data"><div class="woofc-data-left">' . esc_html( self::localization( 'subtotal', esc_html__( 'Subtotal', 'woo-fly-cart' ) ) ) . '</div><div id="woofc-subtotal" class="woofc-data-right">' . wp_kses_post( apply_filters( 'woofc_get_subtotal', WC()->cart->get_cart_subtotal() ) ) . '</div></div>';
+                            echo wp_kses_post( apply_filters( 'woofc_below_subtotal_content', '' ) );
                         }
 
                         if ( class_exists( 'WPCleverWpcfb' ) && ( self::get_setting( 'free_shipping_bar', 'yes' ) === 'yes' ) ) {
@@ -656,25 +649,25 @@ if ( ! function_exists( 'woofc_init' ) ) {
                         }
 
                         if ( self::get_setting( 'total', 'yes' ) === 'yes' ) {
-                            echo apply_filters( 'woofc_above_total_content', '' );
-                            echo '<div class="woofc-total woofc-data"><div class="woofc-data-left">' . self::localization( 'total', esc_html__( 'Total', 'woo-fly-cart' ) ) . '</div><div id="woofc-total" class="woofc-data-right">' . apply_filters( 'woofc_get_total', WC()->cart->get_total() ) . '</div></div>';
-                            echo apply_filters( 'woofc_below_total_content', '' );
+                            echo wp_kses_post( apply_filters( 'woofc_above_total_content', '' ) );
+                            echo '<div class="woofc-total woofc-data"><div class="woofc-data-left">' . esc_html( self::localization( 'total', esc_html__( 'Total', 'woo-fly-cart' ) ) ) . '</div><div id="woofc-total" class="woofc-data-right">' . wp_kses_post( apply_filters( 'woofc_get_total', WC()->cart->get_total() ) ) . '</div></div>';
+                            echo wp_kses_post( apply_filters( 'woofc_below_total_content', '' ) );
                         }
 
                         do_action( 'woofc_above_buttons' );
 
                         if ( self::get_setting( 'buttons', '01' ) === '01' ) {
                             // both buttons
-                            echo '<div class="woofc-action"><div class="woofc-action-inner"><div class="woofc-action-left"><a class="woofc-action-cart" href="' . wc_get_cart_url() . '">' . self::localization( 'cart', esc_html__( 'Cart', 'woo-fly-cart' ) ) . '</a></div><div class="woofc-action-right"><a class="woofc-action-checkout" href="' . wc_get_checkout_url() . '">' . self::localization( 'checkout', esc_html__( 'Checkout', 'woo-fly-cart' ) ) . '</a></div></div></div>';
+                            echo '<div class="woofc-action"><div class="woofc-action-inner"><div class="woofc-action-left"><a class="woofc-action-cart" href="' . esc_url( wc_get_cart_url() ) . '">' . esc_html( self::localization( 'cart', esc_html__( 'Cart', 'woo-fly-cart' ) ) ) . '</a></div><div class="woofc-action-right"><a class="woofc-action-checkout" href="' . esc_url( wc_get_checkout_url() ) . '">' . esc_html( self::localization( 'checkout', esc_html__( 'Checkout', 'woo-fly-cart' ) ) ) . '</a></div></div></div>';
                         } else {
                             if ( self::get_setting( 'buttons', '01' ) === '02' ) {
                                 // cart
-                                echo '<div class="woofc-action"><div class="woofc-action-inner"><div class="woofc-action-full"><a class="woofc-action-cart" href="' . wc_get_cart_url() . '">' . self::localization( 'cart', esc_html__( 'Cart', 'woo-fly-cart' ) ) . '</a></div></div></div>';
+                                echo '<div class="woofc-action"><div class="woofc-action-inner"><div class="woofc-action-full"><a class="woofc-action-cart" href="' . esc_url( wc_get_cart_url() ) . '">' . esc_html( self::localization( 'cart', esc_html__( 'Cart', 'woo-fly-cart' ) ) ) . '</a></div></div></div>';
                             }
 
                             if ( self::get_setting( 'buttons', '01' ) === '03' ) {
                                 // checkout
-                                echo '<div class="woofc-action"><div class="woofc-action-inner"><div class="woofc-action-full"><a class="woofc-action-checkout" href="' . wc_get_checkout_url() . '">' . self::localization( 'checkout', esc_html__( 'Checkout', 'woo-fly-cart' ) ) . '</a></div></div></div>';
+                                echo '<div class="woofc-action"><div class="woofc-action-inner"><div class="woofc-action-full"><a class="woofc-action-checkout" href="' . esc_url( wc_get_checkout_url() ) . '">' . esc_html( self::localization( 'checkout', esc_html__( 'Checkout', 'woo-fly-cart' ) ) ) . '</a></div></div></div>';
                             }
                         }
 
@@ -705,16 +698,16 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     }
 
                     if ( self::get_setting( 'continue', 'yes' ) === 'yes' ) {
-                        echo '<div class="woofc-continue"><span class="woofc-continue-url" data-url="' . esc_url( self::get_setting( 'continue_url', '' ) ) . '">' . self::localization( 'continue', esc_html__( 'Continue shopping', 'woo-fly-cart' ) ) . '</span></div>';
+                        echo '<div class="woofc-continue"><span class="woofc-continue-url" data-url="' . esc_url( self::get_setting( 'continue_url', '' ) ) . '">' . esc_html( self::localization( 'continue', esc_html__( 'Continue shopping', 'woo-fly-cart' ) ) ) . '</span></div>';
                     }
 
                     do_action( 'woofc_below_bottom' );
-                    echo apply_filters( 'woofc_below_bottom_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_below_bottom_content', '' ) );
 
                     echo '</div><!-- woofc-area-bot -->';
 
                     do_action( 'woofc_below_area' );
-                    echo apply_filters( 'woofc_below_area_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_below_area_content', '' ) );
 
                     if ( self::get_setting( 'confetti', 'no' ) === 'yes' ) {
                         echo '<canvas id="woofc-canvas" class="woofc-canvas"></canvas>';
@@ -729,9 +722,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                 function get_suggested_products( $suggested_products = [], $link = 'no' ) {
                     do_action( 'woofc_above_suggested', $suggested_products );
-                    echo apply_filters( 'woofc_above_suggested_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_above_suggested_content', '' ) );
                     echo '<div class="woofc-suggested">';
-                    echo '<div class="woofc-suggested-heading"><span>' . self::localization( 'suggested', esc_html__( 'You may be interested in&hellip;', 'woo-fly-cart' ) ) . '</span></div>';
+                    echo '<div class="woofc-suggested-heading"><span>' . esc_html( self::localization( 'suggested', esc_html__( 'You may be interested in&hellip;', 'woo-fly-cart' ) ) ) . '</span></div>';
                     echo '<div class="woofc-suggested-products ' . ( ( count( $suggested_products ) > 1 ) && ( apply_filters( 'woofc_slick', self::get_setting( 'suggested_carousel', 'yes' ), 'suggested' ) === 'yes' ) ? 'woofc-suggested-products-slick' : '' ) . '">';
 
                     foreach ( $suggested_products as $suggested_product_id ) {
@@ -744,9 +737,9 @@ if ( ! function_exists( 'woofc_init' ) ) {
                             echo '<div class="woofc-suggested-product-image">';
 
                             if ( ( $link !== 'no' ) && ! empty( $suggested_product_link ) ) {
-                                echo sprintf( '<a ' . ( $link === 'yes_popup' ? 'class="woosq-link" data-id="' . esc_attr( $suggested_product_id ) . '" data-context="woofc"' : '' ) . ' href="%s" ' . ( $link === 'yes_blank' ? 'target="_blank"' : '' ) . '>%s</a>', esc_url( $suggested_product_link ), $suggested_product->get_image() );
+                                echo sprintf( '<a ' . ( $link === 'yes_popup' ? 'class="woosq-link" data-id="' . esc_attr( $suggested_product_id ) . '" data-context="woofc"' : '' ) . ' href="%s" ' . ( $link === 'yes_blank' ? 'target="_blank"' : '' ) . '>%s</a>', esc_url( $suggested_product_link ), wp_kses_post( $suggested_product->get_image() ) );
                             } else {
-                                echo $suggested_product->get_image();
+                                echo wp_kses_post( $suggested_product->get_image() );
                             }
 
                             echo '</div>';
@@ -754,13 +747,13 @@ if ( ! function_exists( 'woofc_init' ) ) {
                             echo '<div class="woofc-suggested-product-name">';
 
                             if ( ( $link !== 'no' ) && ! empty( $suggested_product_link ) ) {
-                                echo sprintf( '<a ' . ( $link === 'yes_popup' ? 'class="woosq-link" data-id="' . esc_attr( $suggested_product_id ) . '" data-context="woofc"' : '' ) . ' href="%s" ' . ( $link === 'yes_blank' ? 'target="_blank"' : '' ) . '>%s</a>', esc_url( $suggested_product_link ), $suggested_product->get_name() );
+                                echo sprintf( '<a ' . ( $link === 'yes_popup' ? 'class="woosq-link" data-id="' . esc_attr( $suggested_product_id ) . '" data-context="woofc"' : '' ) . ' href="%s" ' . ( $link === 'yes_blank' ? 'target="_blank"' : '' ) . '>%s</a>', esc_url( $suggested_product_link ), esc_html( $suggested_product->get_name() ) );
                             } else {
-                                echo $suggested_product->get_name();
+                                echo esc_html( $suggested_product->get_name() );
                             }
 
                             echo '</div>';
-                            echo '<div class="woofc-suggested-product-price">' . $suggested_product->get_price_html() . '</div>';
+                            echo '<div class="woofc-suggested-product-price">' . wp_kses_post( $suggested_product->get_price_html() ) . '</div>';
                             echo '<div class="woofc-suggested-product-atc">' . do_shortcode( '[add_to_cart style="" show_price="false" id="' . esc_attr( $suggested_product->get_id() ) . '"]' ) . '</div>';
                             echo '</div>';
                             echo '</div>';
@@ -768,7 +761,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     }
 
                     echo '</div></div>';
-                    echo apply_filters( 'woofc_below_suggested_content', '' );
+                    echo wp_kses_post( apply_filters( 'woofc_below_suggested_content', '' ) );
                     do_action( 'woofc_below_suggested', $suggested_products );
                 }
 
@@ -782,7 +775,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     echo '<div class="woofc-inner woofc-checkout-area woofc-hide">';
                     echo '<div class="woofc-area-top">';
                     echo '<div class="woofc-back hint--right" aria-label="' . esc_attr( self::localization( 'cart', esc_html__( 'Cart', 'woo-fly-cart' ) ) ) . '">←</div>';
-                    echo '<span>' . self::localization( 'checkout', esc_html__( 'Checkout', 'woo-fly-cart' ) ) . '</span>';
+                    echo '<span>' . esc_html( self::localization( 'checkout', esc_html__( 'Checkout', 'woo-fly-cart' ) ) ) . '</span>';
 
                     if ( self::get_setting( 'close', 'yes' ) === 'yes' ) {
                         echo '<div class="woofc-close hint--left" aria-label="' . esc_attr( self::localization( 'close', esc_html__( 'Close', 'woo-fly-cart' ) ) ) . '"><i class="woofc-icon-icon10"></i></div>';
@@ -877,12 +870,12 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                     echo '<div id="woofc-area" class="' . esc_attr( $area_class ) . '">';
 
-                    echo self::get_cart_area();
+                    echo wp_kses_post( self::get_cart_area() );
 
                     echo '</div>';
 
                     if ( self::get_setting( 'count', 'yes' ) === 'yes' ) {
-                        echo self::get_cart_count();
+                        echo wp_kses_post( self::get_cart_count() );
                     }
 
                     if ( self::get_setting( 'overlay_layer', 'yes' ) === 'yes' ) {
@@ -954,11 +947,11 @@ if ( ! function_exists( 'woofc_init' ) ) {
                     $count     = WC()->cart->get_cart_contents_count();
                     $subtotal  = WC()->cart->get_cart_subtotal();
                     $icon      = self::get_setting( 'count_icon', 'woofc-icon-cart7' );
-                    $cart_link = '<span class="woofc-cart-link"><a href="' . wc_get_cart_url() . '"><span class="woofc-cart-link-inner" data-count="' . esc_attr( $count ) . '"><i class="' . esc_attr( $icon ) . '"></i> <span class="woofc-cart-link-inner-subtotal">' . $subtotal . '</span></span></a></span>';
+                    $cart_link = '<span class="woofc-cart-link"><a href="' . esc_url( wc_get_cart_url() ) . '"><span class="woofc-cart-link-inner" data-count="' . esc_attr( $count ) . '"><i class="' . esc_attr( $icon ) . '"></i> <span class="woofc-cart-link-inner-subtotal">' . wp_kses_post( $subtotal ) . '</span></span></a></span>';
                     $cart_link = apply_filters( 'woofc_cart_link', $cart_link, $count, $subtotal, $icon );
 
                     if ( $echo ) {
-                        echo $cart_link;
+                        echo wp_kses_post( $cart_link );
                     } else {
                         return $cart_link;
                     }
