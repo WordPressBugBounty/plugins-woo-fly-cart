@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPC Fly Cart for WooCommerce 6.2.1\n"
+"Project-Id-Version: WPC Fly Cart for WooCommerce 6.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-fly-cart\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-16T23:59:33+00:00\n"
+"POT-Creation-Date: 2026-06-23T07:40:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-fly-cart\n"
@@ -89,7 +89,7 @@ msgid "Settings updated."
 msgstr ""
 
 #: includes/class-backend.php:168
-#: includes/class-backend.php:889
+#: includes/class-backend.php:902
 msgid "Localization"
 msgstr ""
 
@@ -125,8 +125,8 @@ msgstr ""
 #: includes/class-backend.php:725
 #: includes/class-backend.php:735
 #: includes/class-backend.php:745
-#: includes/class-backend.php:780
-#: includes/class-backend.php:817
+#: includes/class-backend.php:793
+#: includes/class-backend.php:830
 msgid "Yes"
 msgstr ""
 
@@ -147,8 +147,8 @@ msgstr ""
 #: includes/class-backend.php:684
 #: includes/class-backend.php:726
 #: includes/class-backend.php:746
-#: includes/class-backend.php:781
-#: includes/class-backend.php:818
+#: includes/class-backend.php:794
+#: includes/class-backend.php:831
 msgid "No"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgid "Read more about %s"
 msgstr ""
 
 #: includes/class-backend.php:296
-#: includes/class-backend.php:786
+#: includes/class-backend.php:799
 msgid "Position"
 msgstr ""
 
@@ -363,8 +363,8 @@ msgstr ""
 
 #: includes/class-backend.php:415
 #: includes/class-backend.php:464
-#: includes/class-backend.php:995
-#: includes/class-backend.php:1001
+#: includes/class-backend.php:1008
+#: includes/class-backend.php:1014
 #: wpc-fly-cart.php:615
 msgid "Subtotal"
 msgstr ""
@@ -430,8 +430,8 @@ msgid "It requires enabling tax and excluding tax from display prices during car
 msgstr ""
 
 #: includes/class-backend.php:533
-#: includes/class-backend.php:1039
-#: includes/class-backend.php:1045
+#: includes/class-backend.php:1052
+#: includes/class-backend.php:1058
 #: wpc-fly-cart.php:653
 msgid "Total"
 msgstr ""
@@ -469,7 +469,7 @@ msgid "Open instant checkout form immediately after adding a product to the cart
 msgstr ""
 
 #: includes/class-backend.php:575
-#: includes/class-backend.php:1083
+#: includes/class-backend.php:1096
 msgid "Suggested products"
 msgstr ""
 
@@ -530,8 +530,8 @@ msgid "Upsell funnel products carousel"
 msgstr ""
 
 #: includes/class-backend.php:670
-#: includes/class-backend.php:962
-#: includes/class-backend.php:968
+#: includes/class-backend.php:975
+#: includes/class-backend.php:981
 #: wpc-fly-cart.php:603
 msgid "Empty cart"
 msgstr ""
@@ -541,7 +541,7 @@ msgid "Show/hide the empty cart button under the product list."
 msgstr ""
 
 #: includes/class-backend.php:680
-#: includes/class-backend.php:973
+#: includes/class-backend.php:986
 msgid "Confirm empty"
 msgstr ""
 
@@ -550,15 +550,15 @@ msgid "Enable/disable confirm before emptying the cart."
 msgstr ""
 
 #: includes/class-backend.php:690
-#: includes/class-backend.php:984
-#: includes/class-backend.php:990
+#: includes/class-backend.php:997
+#: includes/class-backend.php:1003
 #: wpc-fly-cart.php:607
 msgid "Share cart"
 msgstr ""
 
 #: includes/class-backend.php:701
-#: includes/class-backend.php:1072
-#: includes/class-backend.php:1078
+#: includes/class-backend.php:1085
+#: includes/class-backend.php:1091
 #: wpc-fly-cart.php:701
 msgid "Continue shopping"
 msgstr ""
@@ -576,7 +576,7 @@ msgid "Custom URL for \"continue shopping\" button. By default, only close the f
 msgstr ""
 
 #: includes/class-backend.php:722
-#: includes/class-backend.php:928
+#: includes/class-backend.php:941
 msgid "Confirm remove"
 msgstr ""
 
@@ -585,7 +585,7 @@ msgid "Enable/disable confirm before removing a product."
 msgstr ""
 
 #: includes/class-backend.php:732
-#: includes/class-backend.php:939
+#: includes/class-backend.php:952
 msgid "Undo remove"
 msgstr ""
 
@@ -605,186 +605,186 @@ msgstr ""
 msgid "Hide on pages"
 msgstr ""
 
-#: includes/class-backend.php:769
+#: includes/class-backend.php:782
 msgid "Hide the fly cart on these pages."
 msgstr ""
 
-#: includes/class-backend.php:773
+#: includes/class-backend.php:786
 msgid "Bubble"
 msgstr ""
 
-#: includes/class-backend.php:774
+#: includes/class-backend.php:787
 msgid "Settings for the bubble."
 msgstr ""
 
-#: includes/class-backend.php:777
+#: includes/class-backend.php:790
 msgid "Enable"
 msgstr ""
 
-#: includes/class-backend.php:789
+#: includes/class-backend.php:802
 msgid "Top Left"
 msgstr ""
 
-#: includes/class-backend.php:790
+#: includes/class-backend.php:803
 msgid "Top Right"
 msgstr ""
 
-#: includes/class-backend.php:791
+#: includes/class-backend.php:804
 msgid "Bottom Left"
 msgstr ""
 
-#: includes/class-backend.php:792
+#: includes/class-backend.php:805
 msgid "Bottom Right"
 msgstr ""
 
-#: includes/class-backend.php:797
+#: includes/class-backend.php:810
 msgid "Icon"
 msgstr ""
 
-#: includes/class-backend.php:814
+#: includes/class-backend.php:827
 msgid "Hide if empty"
 msgstr ""
 
-#: includes/class-backend.php:820
+#: includes/class-backend.php:833
 msgid "Hide the bubble if the cart is empty?"
 msgstr ""
 
-#: includes/class-backend.php:824
+#: includes/class-backend.php:837
 msgid "Menu"
 msgstr ""
 
-#: includes/class-backend.php:825
+#: includes/class-backend.php:838
 msgid "Settings for cart menu item."
 msgstr ""
 
-#: includes/class-backend.php:828
+#: includes/class-backend.php:841
 msgid "Menu(s)"
 msgstr ""
 
-#: includes/class-backend.php:847
+#: includes/class-backend.php:860
 msgid "Haven't any menu yet. Please go to Appearance > Menus to create one."
 msgstr ""
 
-#: includes/class-backend.php:850
+#: includes/class-backend.php:863
 msgid "Choose the menu(s) you want to add the cart at the end."
 msgstr ""
 
-#: includes/class-backend.php:854
+#: includes/class-backend.php:867
 msgid "Custom menu"
 msgstr ""
 
-#: includes/class-backend.php:860
+#: includes/class-backend.php:873
 msgid "button class or id"
 msgstr ""
 
 #. translators: selector
-#: includes/class-backend.php:862
+#: includes/class-backend.php:875
 #, php-format
 msgid "The class or id of the custom menu. When clicking on it, the fly cart will show up. Example %1$s or %2$s"
 msgstr ""
 
-#: includes/class-backend.php:880
-#: includes/class-backend.php:1110
+#: includes/class-backend.php:893
+#: includes/class-backend.php:1123
 msgid "import / export"
 msgstr ""
 
-#: includes/class-backend.php:891
+#: includes/class-backend.php:904
 msgid "Leave blank to use the default text and its equivalent translation in multiple languages."
 msgstr ""
 
-#: includes/class-backend.php:895
+#: includes/class-backend.php:908
 msgid "Cart heading"
 msgstr ""
 
-#: includes/class-backend.php:901
+#: includes/class-backend.php:914
 #: wpc-fly-cart.php:390
 msgid "Shopping cart"
 msgstr ""
 
-#: includes/class-backend.php:906
-#: includes/class-backend.php:912
+#: includes/class-backend.php:919
+#: includes/class-backend.php:925
 #: wpc-fly-cart.php:393
 #: wpc-fly-cart.php:781
 msgid "Close"
 msgstr ""
 
 #. translators: product
-#: includes/class-backend.php:917
-#: includes/class-backend.php:923
+#: includes/class-backend.php:930
+#: includes/class-backend.php:936
 #: wpc-fly-cart.php:536
 msgid "Remove"
 msgstr ""
 
-#: includes/class-backend.php:934
+#: includes/class-backend.php:947
 #: wpc-fly-cart.php:241
 msgid "Do you want to remove this item?"
 msgstr ""
 
-#: includes/class-backend.php:945
+#: includes/class-backend.php:958
 #: wpc-fly-cart.php:242
 msgid "Undo?"
 msgstr ""
 
-#: includes/class-backend.php:950
+#: includes/class-backend.php:963
 msgid "Removed"
 msgstr ""
 
 #. translators: product
-#: includes/class-backend.php:957
+#: includes/class-backend.php:970
 #: wpc-fly-cart.php:243
 #, php-format
 msgid "%s was removed."
 msgstr ""
 
-#: includes/class-backend.php:979
+#: includes/class-backend.php:992
 #: wpc-fly-cart.php:240
 msgid "Do you want to empty the cart?"
 msgstr ""
 
-#: includes/class-backend.php:1006
-#: includes/class-backend.php:1012
+#: includes/class-backend.php:1019
+#: includes/class-backend.php:1025
 msgid "Coupon code"
 msgstr ""
 
-#: includes/class-backend.php:1017
+#: includes/class-backend.php:1030
 msgid "Coupon apply"
 msgstr ""
 
-#: includes/class-backend.php:1023
+#: includes/class-backend.php:1036
 msgid "Apply"
 msgstr ""
 
-#: includes/class-backend.php:1028
-#: includes/class-backend.php:1034
+#: includes/class-backend.php:1041
+#: includes/class-backend.php:1047
 msgid "Shipping"
 msgstr ""
 
-#: includes/class-backend.php:1050
-#: includes/class-backend.php:1056
+#: includes/class-backend.php:1063
+#: includes/class-backend.php:1069
 #: wpc-fly-cart.php:661
 #: wpc-fly-cart.php:665
 #: wpc-fly-cart.php:777
 msgid "Cart"
 msgstr ""
 
-#: includes/class-backend.php:1061
-#: includes/class-backend.php:1067
+#: includes/class-backend.php:1074
+#: includes/class-backend.php:1080
 #: wpc-fly-cart.php:661
 #: wpc-fly-cart.php:670
 #: wpc-fly-cart.php:778
 msgid "Checkout"
 msgstr ""
 
-#: includes/class-backend.php:1089
+#: includes/class-backend.php:1102
 #: wpc-fly-cart.php:727
 msgid "You may be interested in&hellip;"
 msgstr ""
 
-#: includes/class-backend.php:1094
+#: includes/class-backend.php:1107
 msgid "There are no products"
 msgstr ""
 
-#: includes/class-backend.php:1100
+#: includes/class-backend.php:1113
 #: wpc-fly-cart.php:547
 msgid "There are no products in the cart!"
 msgstr ""

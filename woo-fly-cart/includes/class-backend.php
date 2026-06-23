@@ -764,7 +764,20 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                                 'walker'   => new Walker_PageDropdown_Multiple(),
                                                 'selected' => $hide_pages
                                         ];
-                                        echo wp_kses_post( str_replace( '<select', '<select multiple="multiple"', wp_dropdown_pages( $args ) ) );
+                                        // Use wp_kses to allow select and option tags which are stripped by wp_kses_post.
+                                        echo wp_kses( str_replace( '<select', '<select multiple="multiple"', wp_dropdown_pages( $args ) ), [
+                                                'select' => [
+                                                        'name'     => true,
+                                                        'id'       => true,
+                                                        'multiple' => true,
+                                                        'class'    => true,
+                                                ],
+                                                'option' => [
+                                                        'class'    => true,
+                                                        'value'    => true,
+                                                        'selected' => true,
+                                                ],
+                                        ] );
                                         ?>
                                         <p class="description"><?php esc_html_e( 'Hide the fly cart on these pages.', 'woo-fly-cart' ); ?></p>
                                     </td>
