@@ -3,7 +3,7 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 6.2.2
+Version: 6.2.3
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
@@ -12,14 +12,14 @@ Requires Plugins: woocommerce
 Requires at least: 5.9
 Tested up to: 7.0
 WC requires at least: 3.0
-WC tested up to: 10.8
+WC tested up to: 10.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '6.2.2' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '6.2.3' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
@@ -273,23 +273,23 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                 function ajax_update_qty() {
                     if ( ! apply_filters( 'woofc_disable_nonce_check', false, 'update_qty' ) ) {
-                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'woofc-security' ) ) {
+                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'woofc-security' ) ) {
                             wp_die( 'Permissions check failed!' );
                         }
                     }
 
                     if ( isset( $_POST['cart_item_qty'] ) && ! empty( $_POST['cart_item_key'] ) ) {
-                        if ( $cart_item = WC()->cart->get_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ) ) ) {
-                            $qty = (float) sanitize_text_field( wp_unslash( $_POST['cart_item_qty'] ) );
+                        if ( $cart_item = WC()->cart->get_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ?? '' ) ) ) ) {
+                            $qty = (float) sanitize_text_field( wp_unslash( $_POST['cart_item_qty'] ?? '' ) );
 
                             if ( ( $max_purchase = $cart_item['data']->get_max_purchase_quantity() ) && ( $max_purchase > 0 ) && ( $qty > $max_purchase ) ) {
                                 $qty = $max_purchase;
                             }
 
                             if ( $qty > 0 ) {
-                                WC()->cart->set_quantity( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ), $qty );
+                                WC()->cart->set_quantity( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ?? '' ) ), $qty );
                             } else {
-                                WC()->cart->remove_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ) );
+                                WC()->cart->remove_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ?? '' ) ) );
                             }
                         }
 
@@ -301,13 +301,13 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                 function ajax_remove_item() {
                     if ( ! apply_filters( 'woofc_disable_nonce_check', false, 'remove_item' ) ) {
-                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'woofc-security' ) ) {
+                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'woofc-security' ) ) {
                             wp_die( 'Permissions check failed!' );
                         }
                     }
 
                     if ( isset( $_POST['cart_item_key'] ) ) {
-                        WC()->cart->remove_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ) ) );
+                        WC()->cart->remove_cart_item( sanitize_text_field( wp_unslash( $_POST['cart_item_key'] ?? '' ) ) );
                         WC_AJAX::get_refreshed_fragments();
                     }
 
@@ -316,13 +316,13 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                 function ajax_undo_remove() {
                     if ( ! apply_filters( 'woofc_disable_nonce_check', false, 'undo_remove' ) ) {
-                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'woofc-security' ) ) {
+                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'woofc-security' ) ) {
                             wp_die( 'Permissions check failed!' );
                         }
                     }
 
                     if ( isset( $_POST['item_key'] ) ) {
-                        if ( WC()->cart->restore_cart_item( sanitize_text_field( wp_unslash( $_POST['item_key'] ) ) ) ) {
+                        if ( WC()->cart->restore_cart_item( sanitize_text_field( wp_unslash( $_POST['item_key'] ?? '' ) ) ) ) {
                             echo 'true';
                         } else {
                             echo 'false';
@@ -334,7 +334,7 @@ if ( ! function_exists( 'woofc_init' ) ) {
 
                 function ajax_empty_cart() {
                     if ( ! apply_filters( 'woofc_disable_nonce_check', false, 'empty_cart' ) ) {
-                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'woofc-security' ) ) {
+                        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['nonce'] ) ), 'woofc-security' ) ) {
                             wp_die( 'Permissions check failed!' );
                         }
                     }
