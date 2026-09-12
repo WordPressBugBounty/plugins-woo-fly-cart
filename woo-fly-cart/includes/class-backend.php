@@ -54,7 +54,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
             add_thickbox();
             wp_enqueue_media();
             wp_enqueue_style( 'wp-color-picker' );
-            wp_enqueue_style( 'woofc-backend', WOOFC_URI . 'assets/css/backend.css', [], WOOFC_VERSION );
+            wp_enqueue_style( 'woofc-backend', WOOFC_URI . 'assets/css/backend.css', [ 'woocommerce_admin_styles' ], WOOFC_VERSION );
             wp_enqueue_style( 'fonticonpicker', WOOFC_URI . 'assets/fonticonpicker/css/jquery.fonticonpicker.css', [], WOOFC_VERSION );
             wp_enqueue_script( 'fonticonpicker', WOOFC_URI . 'assets/fonticonpicker/js/jquery.fonticonpicker.min.js', [ 'jquery' ], WOOFC_VERSION, true );
             wp_enqueue_style( 'woofc-fonts', WOOFC_URI . 'assets/css/fonts.css', [], WOOFC_VERSION );
@@ -72,8 +72,10 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
             }
 
             if ( $plugin === $file ) {
-                $settings             = '<a href="' . esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=settings' ) ) . '">' . esc_html__( 'Settings', 'woo-fly-cart' ) . '</a>';
-                $links['wpc-premium'] = '<a href="' . esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=premium' ) ) . '">' . esc_html__( 'Premium Version', 'woo-fly-cart' ) . '</a>';
+                $settings = '<a href="' . esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=settings' ) ) . '">' . esc_html__( 'Settings', 'woo-fly-cart' ) . '</a>';
+                if ( ! defined( 'WOOFC_PREMIUM' ) ) {
+                    $links['wpc-premium'] = '<a href="' . esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=premium' ) ) . '">' . esc_html__( 'Premium Version', 'woo-fly-cart' ) . '</a>';
+                }
                 array_unshift( $links, $settings );
             }
 
@@ -130,55 +132,78 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
 
         function admin_menu_content() {
             $active_tab = sanitize_key( wp_unslash( $_GET['tab'] ?? 'settings' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- tab navigation, no data modification
+            $title_badge = esc_html__( 'Settings', 'woo-fly-cart' );
+            if ( $active_tab === 'localization' ) {
+                $title_badge = esc_html__( 'Localization', 'woo-fly-cart' );
+            } elseif ( $active_tab === 'premium' ) {
+                $title_badge = esc_html__( 'Premium', 'woo-fly-cart' );
+            }
             ?>
-            <div class="wpclever_settings_page wrap">
-                <div class="wpclever_settings_page_header">
-                    <a class="wpclever_settings_page_header_logo" href="https://wpclever.net/"
-                       target="_blank" title="Visit wpclever.net"></a>
-                    <div class="wpclever_settings_page_header_text">
-                        <div class="wpclever_settings_page_title"><?php echo esc_html__( 'WPC Fly Cart', 'woo-fly-cart' ) . ' ' . esc_html( WOOFC_VERSION ) . ' ' . ( defined( 'WOOFC_PREMIUM' ) ? '<span class="premium" style="display: none">' . esc_html__( 'Premium', 'woo-fly-cart' ) . '</span>' : '' ); ?></div>
-                        <div class="wpclever_settings_page_desc about-text">
-                            <p>
-                                <?php printf( /* translators: stars */ esc_html__( 'Thank you for using our plugin! If you are satisfied, please reward it a full five-star %s rating.', 'woo-fly-cart' ), '<span style="color:#ffb900">&#9733;&#9733;&#9733;&#9733;&#9733;</span>' ); ?>
-                                <br/>
-                                <a href="<?php echo esc_url( WOOFC_REVIEWS ); ?>"
-                                   target="_blank"><?php esc_html_e( 'Reviews', 'woo-fly-cart' ); ?></a> |
-                                <a href="<?php echo esc_url( WOOFC_CHANGELOG ); ?>"
-                                   target="_blank"><?php esc_html_e( 'Changelog', 'woo-fly-cart' ); ?></a> |
-                                <a href="<?php echo esc_url( WOOFC_DISCUSSION ); ?>"
-                                   target="_blank"><?php esc_html_e( 'Discussion', 'woo-fly-cart' ); ?></a>
-                            </p>
+            <div class="wrap woofc-settings-wrap">
+                <div class="woofc-settings-header">
+                    <div class="woofc-settings-header-inner">
+                        <div class="woofc-header-left">
+                            <div class="woofc-logo">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="1"/>
+                                    <circle cx="20" cy="21" r="1"/>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h1>
+                                    <?php echo esc_html__( 'WPC Fly Cart', 'woo-fly-cart' ) . ' ' . esc_html( WOOFC_VERSION ); ?>
+                                    <?php if ( defined( 'WOOFC_PREMIUM' ) ) : ?>
+                                        <span class="premium"><?php esc_html_e( 'Premium', 'woo-fly-cart' ); ?></span>
+                                    <?php endif; ?>
+                                </h1>
+                                <p class="woofc-tagline">
+                                    <?php esc_html_e( 'An interactive mini cart for WooCommerce.', 'woo-fly-cart' ); ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="woofc-settings-status-badge">
+                            <?php echo esc_html( $title_badge ); ?>
                         </div>
                     </div>
                 </div>
-                <h2></h2>
-                <?php if ( isset( $_GET['settings-updated'] ) && sanitize_text_field( wp_unslash( $_GET['settings-updated'] ?? '' ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core param added after options.php save ?>
-                    <div class="notice notice-success is-dismissible">
-                        <p><?php esc_html_e( 'Settings updated.', 'woo-fly-cart' ); ?></p>
-                    </div>
-                <?php } ?>
-                <div class="wpclever_settings_page_nav">
-                    <h2 class="nav-tab-wrapper">
+
+                <div class="woofc-admin-nav">
+                    <div class="woofc-nav-container">
                         <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=settings' ) ); ?>"
-                           class="<?php echo esc_attr( $active_tab === 'settings' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>">
+                           class="woofc-nav-item <?php echo $active_tab === 'settings' ? 'active' : ''; ?>">
                             <?php esc_html_e( 'Settings', 'woo-fly-cart' ); ?>
                         </a>
                         <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=localization' ) ); ?>"
-                           class="<?php echo esc_attr( $active_tab === 'localization' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>">
+                           class="woofc-nav-item <?php echo $active_tab === 'localization' ? 'active' : ''; ?>">
                             <?php esc_html_e( 'Localization', 'woo-fly-cart' ); ?>
                         </a>
-                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=premium' ) ); ?>"
-                           class="<?php echo esc_attr( $active_tab === 'premium' ? 'nav-tab nav-tab-active' : 'nav-tab' ); ?>"
-                           style="color: #c9356e">
-                            <?php esc_html_e( 'Premium Version', 'woo-fly-cart' ); ?>
-                        </a>
+                        <?php if ( ! defined( 'WOOFC_PREMIUM' ) ) : ?>
+                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-woofc&tab=premium' ) ); ?>"
+                               class="woofc-nav-item wpc-premium <?php echo $active_tab === 'premium' ? 'active' : ''; ?>">
+                                <?php esc_html_e( 'Premium Version', 'woo-fly-cart' ); ?>
+                            </a>
+                        <?php endif; ?>
+                        <?php if ( defined( 'WOOFC_PREMIUM' ) ) : ?>
+                            <a href="<?php echo esc_url( WOOFC_SUPPORT ); ?>" class="woofc-nav-item" target="_blank">
+                                <?php esc_html_e( 'Support', 'woo-fly-cart' ); ?>
+                            </a>
+                        <?php endif; ?>
                         <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpclever-kit' ) ); ?>"
-                           class="nav-tab">
+                           class="woofc-nav-item">
                             <?php esc_html_e( 'Essential Kit', 'woo-fly-cart' ); ?>
                         </a>
-                    </h2>
+                    </div>
                 </div>
-                <div class="wpclever_settings_page_content">
+
+                <?php if ( isset( $_GET['settings-updated'] ) && sanitize_text_field( wp_unslash( $_GET['settings-updated'] ?? '' ) ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core param added after options.php save ?>
+                    <div class="notice notice-success is-dismissible">
+                        <p><?php esc_html_e( 'Settings updated.', 'woo-fly-cart' ); ?></p>
+                    </div>
+                <?php endif; ?>
+
+                <div class="woofc-settings-page-content">
                     <?php if ( $active_tab === 'settings' ) {
                         $default_style           = apply_filters( 'woofc_default_style', '01' );
                         $auto_show_ajax          = WPCleverWoofc::get_setting( 'auto_show_ajax', 'yes' );
@@ -228,11 +253,11 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                         $count_hide_empty        = WPCleverWoofc::get_setting( 'count_hide_empty', 'no' );
                         ?>
                         <form method="post" action="options.php">
-                            <table class="form-table">
-                                <tr class="heading">
-                                    <th><?php esc_html_e( 'General', 'woo-fly-cart' ); ?></th>
-                                    <td><?php esc_html_e( 'General settings for the fly cart.', 'woo-fly-cart' ); ?></td>
-                                </tr>
+                            <?php settings_fields( 'woofc_settings' ); ?>
+                            <div class="woofc-card">
+                                <h2 class="woofc-card-title"><?php esc_html_e( 'General', 'woo-fly-cart' ); ?></h2>
+                                <p class="woofc-card-desc"><?php esc_html_e( 'General settings for the fly cart.', 'woo-fly-cart' ); ?></p>
+                                <table class="woofc-form-table">
                                 <tr>
                                     <th><?php esc_html_e( 'Open on AJAX add to cart', 'woo-fly-cart' ); ?></th>
                                     <td>
@@ -469,7 +494,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                             </select> </label>
                                     </td>
                                 </tr>
-                                <tr style="opacity: .5; pointer-events: none">
+                                <tr class="<?php echo ! defined( 'WOOFC_PREMIUM' ) ? 'woofc-disabled-row' : ''; ?>">
                                     <th><?php esc_html_e( 'Coupon', 'woo-fly-cart' ); ?></th>
                                     <td>
                                         <label> <select name="woofc_settings[coupon]">
@@ -478,7 +503,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                             </select> </label>
                                     </td>
                                 </tr>
-                                <tr style="opacity: .5; pointer-events: none">
+                                <tr class="<?php echo ! defined( 'WOOFC_PREMIUM' ) ? 'woofc-disabled-row' : ''; ?>">
                                     <th><?php esc_html_e( 'Coupon listing', 'woo-fly-cart' ); ?></th>
                                     <td>
                                         <label> <select name="woofc_settings[coupon_listing]">
@@ -489,7 +514,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                                     class="thickbox" title="WPC Coupon Listing">WPC Coupon Listing</a> to make it work.</span>
                                     </td>
                                 </tr>
-                                <tr style="opacity: .5; pointer-events: none">
+                                <tr class="<?php echo ! defined( 'WOOFC_PREMIUM' ) ? 'woofc-disabled-row' : ''; ?>">
                                     <th><?php esc_html_e( 'Shipping cost', 'woo-fly-cart' ); ?></th>
                                     <td>
                                         <label> <select name="woofc_settings[shipping_cost]">
@@ -498,7 +523,7 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                             </select> </label>
                                     </td>
                                 </tr>
-                                <tr style="opacity: .5; pointer-events: none">
+                                <tr class="<?php echo ! defined( 'WOOFC_PREMIUM' ) ? 'woofc-disabled-row' : ''; ?>">
                                     <th><?php esc_html_e( 'Shipping calculator', 'woo-fly-cart' ); ?></th>
                                     <td>
                                         <label> <select name="woofc_settings[shipping_calculator]">
@@ -549,19 +574,19 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                             </select> </label>
                                     </td>
                                 </tr>
-                                <tr style="opacity: .5; pointer-events: none">
+                                <tr class="<?php echo ! defined( 'WOOFC_PREMIUM' ) ? 'woofc-disabled-row' : ''; ?>">
                                     <th><?php esc_html_e( 'Instant checkout', 'woo-fly-cart' ); ?></th>
                                     <td>
                                         <label>
-                                            <select name="woofc_settings[instant_checkout]"
-                                                    class="woofc_instant_checkout">
-                                                <option value="yes" <?php selected( $instant_checkout, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
-                                                <option value="no" <?php selected( $instant_checkout, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
-                                            </select> </label>
-                                        <span class="description"><?php esc_html_e( 'If enable this option, buyer can checkout directly on the fly cart.', 'woo-fly-cart' ); ?></span>
-                                    </td>
+                                             <select name="woofc_settings[instant_checkout]"
+                                                     class="woofc_instant_checkout">
+                                                 <option value="yes" <?php selected( $instant_checkout, 'yes' ); ?>><?php esc_html_e( 'Yes', 'woo-fly-cart' ); ?></option>
+                                                 <option value="no" <?php selected( $instant_checkout, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
+                                             </select> </label>
+                                         <span class="description"><?php esc_html_e( 'If enable this option, buyer can checkout directly on the fly cart.', 'woo-fly-cart' ); ?></span>
+                                     </td>
                                 </tr>
-                                <tr style="opacity: .5; pointer-events: none" class="woofc_hide_if_instant_checkout woofc_show_if_instant_checkout_yes">
+                                <tr class="<?php echo ! defined( 'WOOFC_PREMIUM' ) ? 'woofc-disabled-row ' : ''; ?>woofc_hide_if_instant_checkout woofc_show_if_instant_checkout_yes">
                                     <th><?php esc_html_e( 'Open instant checkout immediately', 'woo-fly-cart' ); ?></th>
                                     <td>
                                         <label> <select name="woofc_settings[instant_checkout_open]">
@@ -780,12 +805,12 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                         ] );
                                         ?>
                                         <p class="description"><?php esc_html_e( 'Hide the fly cart on these pages.', 'woo-fly-cart' ); ?></p>
-                                    </td>
-                                </tr>
-                                <tr class="heading">
-                                    <th><?php esc_html_e( 'Bubble', 'woo-fly-cart' ); ?></th>
-                                    <td><?php esc_html_e( 'Settings for the bubble.', 'woo-fly-cart' ); ?></td>
-                                </tr>
+                                </table>
+                            </div>
+                            <div class="woofc-card">
+                                <h2 class="woofc-card-title"><?php esc_html_e( 'Bubble', 'woo-fly-cart' ); ?></h2>
+                                <p class="woofc-card-desc"><?php esc_html_e( 'Settings for the bubble.', 'woo-fly-cart' ); ?></p>
+                                <table class="woofc-form-table">
                                 <tr>
                                     <th><?php esc_html_e( 'Enable', 'woo-fly-cart' ); ?></th>
                                     <td>
@@ -831,12 +856,12 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                                 <option value="no" <?php selected( $count_hide_empty, 'no' ); ?>><?php esc_html_e( 'No', 'woo-fly-cart' ); ?></option>
                                             </select> </label>
                                         <span class="description"><?php esc_html_e( 'Hide the bubble if the cart is empty?', 'woo-fly-cart' ); ?></span>
-                                    </td>
-                                </tr>
-                                <tr class="heading">
-                                    <th><?php esc_html_e( 'Menu', 'woo-fly-cart' ); ?></th>
-                                    <td><?php esc_html_e( 'Settings for cart menu item.', 'woo-fly-cart' ); ?></td>
-                                </tr>
+                                </table>
+                            </div>
+                            <div class="woofc-card">
+                                <h2 class="woofc-card-title"><?php esc_html_e( 'Menu', 'woo-fly-cart' ); ?></h2>
+                                <p class="woofc-card-desc"><?php esc_html_e( 'Settings for cart menu item.', 'woo-fly-cart' ); ?></p>
+                                <table class="woofc-form-table">
                                 <tr>
                                     <th><?php esc_html_e( 'Menu(s)', 'woo-fly-cart' ); ?></th>
                                     <td>
@@ -875,35 +900,29 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                         <span class="description"><?php printf( /* translators: selector */ esc_html__( 'The class or id of the custom menu. When clicking on it, the fly cart will show up. Example %1$s or %2$s', 'woo-fly-cart' ), '<code>.fly-cart-btn</code>', '<code>#fly-cart-btn</code>' ); ?></span>
                                     </td>
                                 </tr>
-                                <tr class="submit">
-                                    <th colspan="2">
-                                        <div class="wpclever_submit">
-                                            <?php
-                                            settings_fields( 'woofc_settings' );
-                                            submit_button( '', 'primary', 'submit', false );
+                                </table>
+                            </div>
+                            <div class="woofc-submit-row">
+                                <?php
+                                submit_button( esc_html__( 'Save Changes', 'woo-fly-cart' ), 'primary', 'submit', false );
 
-                                            if ( function_exists( 'wpc_last_saved' ) ) {
-                                                wpc_last_saved( WPCleverWoofc::get_settings() );
-                                            }
-                                            ?>
-                                        </div>
-                                        <a style="display: none;" class="wpclever_export"
-                                           data-key="woofc_settings"
-                                           data-name="settings"
-                                           href="#"><?php esc_html_e( 'import / export', 'woo-fly-cart' ); ?></a>
-                                    </th>
-                                </tr>
-                            </table>
+                                if ( function_exists( 'wpc_last_saved' ) ) {
+                                    wpc_last_saved( WPCleverWoofc::get_settings() );
+                                }
+                                ?>
+                                <a class="wpclever_export woofc-export-btn"
+                                   data-key="woofc_settings"
+                                   data-name="settings"
+                                   href="#"><span class="dashicons dashicons-database-export"></span> <?php esc_html_e( 'Import / Export', 'woo-fly-cart' ); ?></a>
+                            </div>
                         </form>
                     <?php } elseif ( $active_tab === 'localization' ) { ?>
                         <form method="post" action="options.php">
-                            <table class="form-table">
-                                <tr class="heading">
-                                    <th scope="row"><?php esc_html_e( 'Localization', 'woo-fly-cart' ); ?></th>
-                                    <td>
-                                        <?php esc_html_e( 'Leave blank to use the default text and its equivalent translation in multiple languages.', 'woo-fly-cart' ); ?>
-                                    </td>
-                                </tr>
+                            <?php settings_fields( 'woofc_localization' ); ?>
+                            <div class="woofc-card">
+                                <h2 class="woofc-card-title"><?php esc_html_e( 'Localization', 'woo-fly-cart' ); ?></h2>
+                                <p class="woofc-card-desc"><?php esc_html_e( 'Leave blank to use the default text and its equivalent translation in multiple languages.', 'woo-fly-cart' ); ?></p>
+                                <table class="woofc-form-table">
                                 <tr>
                                     <th><?php esc_html_e( 'Cart heading', 'woo-fly-cart' ); ?></th>
                                     <td>
@@ -1113,54 +1132,34 @@ if ( ! class_exists( 'WPCleverWoofc_Backend' ) ) {
                                                    placeholder="<?php esc_attr_e( 'There are no products in the cart!', 'woo-fly-cart' ); ?>"/>
                                         </label>
                                     </td>
-                                </tr>
-                                <tr class="submit">
-                                    <th colspan="2">
-                                        <?php settings_fields( 'woofc_localization' ); ?><?php submit_button(); ?>
-                                        <a style="display: none;" class="wpclever_export"
-                                           data-key="woofc_localization"
-                                           data-name="settings"
-                                           href="#"><?php esc_html_e( 'import / export', 'woo-fly-cart' ); ?></a>
-                                    </th>
-                                </tr>
-                            </table>
+                                </table>
+                            </div>
+                            <div class="woofc-submit-row">
+                                <?php submit_button( esc_html__( 'Save Changes', 'woo-fly-cart' ), 'primary', 'submit', false ); ?>
+                                <a class="wpclever_export woofc-export-btn"
+                                   data-key="woofc_localization"
+                                   data-name="settings"
+                                   href="#"><span class="dashicons dashicons-database-export"></span> <?php esc_html_e( 'Import / Export', 'woo-fly-cart' ); ?></a>
+                            </div>
                         </form>
                     <?php } elseif ( $active_tab === 'premium' ) { ?>
-                        <div class="wpclever_settings_page_content_text">
-                            <p>Get the Premium Version just $29!
+                        <div class="woofc-card">
+                            <h2 class="woofc-card-title"><?php esc_html_e( 'Premium Version', 'woo-fly-cart' ); ?></h2>
+                            <p class="woofc-card-desc">
+                                <?php esc_html_e( 'Get the Premium Version just $29!', 'woo-fly-cart' ); ?>
                                 <a href="https://wpclever.net/downloads/fly-cart?utm_source=pro&utm_medium=woofc&utm_campaign=wporg"
                                    target="_blank">https://wpclever.net/downloads/fly-cart</a>
                             </p>
-                            <p><strong>Extra features for Premium Version:</strong></p>
-                            <ul style="margin-bottom: 0">
-                                <li>- Enable coupon form.</li>
-                                <li>- Enable shipping cost and shipping calculator.</li>
-                                <li>- Enable instant checkout.</li>
-                                <li>- Get lifetime update & premium support.</li>
+                            <p><strong><?php esc_html_e( 'Extra features for Premium Version:', 'woo-fly-cart' ); ?></strong></p>
+                            <ul class="woofc-premium-features">
+                                <li>- <?php esc_html_e( 'Enable coupon form.', 'woo-fly-cart' ); ?></li>
+                                <li>- <?php esc_html_e( 'Enable shipping cost and shipping calculator.', 'woo-fly-cart' ); ?></li>
+                                <li>- <?php esc_html_e( 'Enable instant checkout.', 'woo-fly-cart' ); ?></li>
+                                <li>- <?php esc_html_e( 'Get lifetime update & premium support.', 'woo-fly-cart' ); ?></li>
                             </ul>
                         </div>
                     <?php } ?>
-                </div><!-- /.wpclever_settings_page_content -->
-                <div class="wpclever_settings_page_suggestion">
-                    <div class="wpclever_settings_page_suggestion_label">
-                        <span class="dashicons dashicons-yes-alt"></span> Suggestion
-                    </div>
-                    <div class="wpclever_settings_page_suggestion_content">
-                        <div>
-                            To display custom engaging real-time messages on any wished positions, please
-                            install
-                            <a href="https://wordpress.org/plugins/wpc-smart-messages/" target="_blank">WPC
-                                Smart Messages</a> plugin. It's free!
-                        </div>
-                        <div>
-                            Wanna save your precious time working on variations? Try our brand-new free plugin
-                            <a href="https://wordpress.org/plugins/wpc-variation-bulk-editor/" target="_blank">WPC
-                                Variation Bulk Editor</a> and
-                            <a href="https://wordpress.org/plugins/wpc-variation-duplicator/" target="_blank">WPC
-                                Variation Duplicator</a>.
-                        </div>
-                    </div>
-                </div>
+                </div><!-- /.woofc-settings-page-content -->
             </div>
             <?php
         }

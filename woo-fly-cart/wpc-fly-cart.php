@@ -3,28 +3,27 @@
 Plugin Name: WPC Fly Cart for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Fly Cart is an interactive mini cart for WooCommerce. It allows users to update product quantities or remove products without reloading the page.
-Version: 6.2.4
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woo-fly-cart
 Domain Path: /languages/
 Requires Plugins: woocommerce
+Version: 6.3.0
 Requires at least: 5.9
-Tested up to: 7.0
 WC requires at least: 3.0
-WC tested up to: 10.9
+WC tested up to: 11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '6.2.4' );
+! defined( 'WOOFC_VERSION' ) && define( 'WOOFC_VERSION', '6.3.0' );
 ! defined( 'WOOFC_LITE' ) && define( 'WOOFC_LITE', __FILE__ );
 ! defined( 'WOOFC_FILE' ) && define( 'WOOFC_FILE', __FILE__ );
 ! defined( 'WOOFC_URI' ) && define( 'WOOFC_URI', plugin_dir_url( __FILE__ ) );
 ! defined( 'WOOFC_DIR' ) && define( 'WOOFC_DIR', plugin_dir_path( __FILE__ ) );
-! defined( 'WOOFC_SUPPORT' ) && define( 'WOOFC_SUPPORT', 'https://wpclever.net/support?utm_source=support&utm_medium=woofc&utm_campaign=wporg' );
+! defined( 'WOOFC_SUPPORT' ) && define( 'WOOFC_SUPPORT', 'https://wpclever.net/support/?utm_source=support&utm_medium=woofc&utm_campaign=wporg' );
 ! defined( 'WOOFC_REVIEWS' ) && define( 'WOOFC_REVIEWS', 'https://wordpress.org/support/plugin/woo-fly-cart/reviews/' );
 ! defined( 'WOOFC_CHANGELOG' ) && define( 'WOOFC_CHANGELOG', 'https://wordpress.org/plugins/woo-fly-cart/#developers' );
 ! defined( 'WOOFC_DISCUSSION' ) && define( 'WOOFC_DISCUSSION', 'https://wordpress.org/support/plugin/woo-fly-cart' );
